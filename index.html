@@ -13,11 +13,12 @@
     body{
       margin:0;
       font-family:'Cairo', system-ui, Arial, sans-serif;
-      background:transparent; /* مُعدّل: اجعل الخلفية شفافة ليتضح عنصر .bg-mark */
+      background:transparent;
       color:#eee;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       padding:18px;
+      direction: rtl; /* الصفحة من اليمين لليسار */
     }
 
     .top-nav{padding:12px 18px;}
@@ -54,7 +55,7 @@
 
     .add-btn { background:transparent; color:var(--accent); border:1px dashed rgba(39,174,96,0.35); padding:6px 10px; border-radius:8px; cursor:pointer; }
     .controls { display:flex; gap:8px; margin-top:10px; }
-    .report-output { width:100%; min-height:220px; resize:vertical; padding:12px; background:#222; color:#ddd; border-radius:8px; border:1px solid rgba(255,255,255,0.03); white-space:pre-wrap; directi[...]
+    .report-output { width:100%; min-height:220px; resize:vertical; padding:12px; background:#222; color:#ddd; border-radius:8px; border:1px solid rgba(255,255,255,0.03); white-space:pre-wrap; direction:rtl; font-family: 'Cairo', sans-serif; }
 
     .del-btn { background:transparent; border:1px solid rgba(255,255,255,0.06); color:#ff6b6b; padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
     .edit-btn { background:transparent; border:1px dashed rgba(255,255,255,0.06); color:#ffd36b; padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
@@ -64,33 +65,30 @@
     .row label.duplicate-label { color:#ff6b6b !important; }
     #dupWarning { color:#ff6b6b; display:none; margin-top:8px; font-size:13px; }
 
-    .player-wrap { display:flex; gap:6px; align-items:center; }
-    .playerChk { width:18px; height:18px; cursor:pointer; }
-    .playerMention { width:160px; padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); background:#222; color:#ddd; display:none; font-size:13px; }
-
-    /* keep hide/show control visible when JS hides row */
-    .hidden-row > *:not(.hide-btn):not(.del-btn) { display: none !important; }
-    .hidden-row > .hide-btn { color: #27ae60; border-color: rgba(39,174,96,0.35); background: rgba(0,0,0,0.06); }
-    .hidden-row { align-items:center; }
-
     .note-item{ display:flex; gap:8px; align-items:center; justify-content:space-between; padding:6px 8px; border-radius:6px; }
     .note-text{ color:#ddd; flex:1; padding-right:8px; }
     .note-actions{ display:flex; gap:6px; align-items:center; margin-left:8px; }
+
+    /* player control appended at end so ترتيب الصف لا يتغير */
+    .playerControl { display:flex; gap:6px; align-items:center; direction:rtl; }
+    .playerControl .playerChk { width:18px; height:18px; cursor:pointer; }
+    .playerControl .playerMention { width:140px; padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); background:#222; color:#ddd; display:none; font-size:13px; direction:rtl; text-align:right; }
 
     @media (max-width:980px){
       .card{width:92%; padding:16px;}
       .title{font-size:22px}
       .row label{min-width:120px}
+      .playerControl .playerMention{width:100px;}
     }
     @media (max-width:480px){
       .card{width:92%}
       .title{font-size:20px}
       .row label{min-width:100px}
+      .playerControl .playerMention{width:80px;}
     }
   </style>
 </head>
 <body>
-  <!-- عنصر الخلفية: ضع 1.png بنفس المجلد أو غيّر المسار في style.css -->
   <div class="bg-mark" aria-hidden="true"></div>
 
   <section class="card">
@@ -100,7 +98,6 @@
         <div class="row"><label>وقت استلام الشفت</label><input id="shiftTimeDisplay" class="input" value="6 صباحا" readonly></div>
       </div>
 
-      <!-- Main groups (ردع - برق - صقر - سهم) -->
       <div class="section">
         <h3 style="margin:0 0 8px;color:var(--accent)">العمليات الأساسية</h3>
 
@@ -128,11 +125,9 @@
         </div>
       </div>
 
-      <!-- Expansions: each expansion has security (أمن) and hura (حرة) -->
       <div class="section" id="expansions">
         <h3 style="margin:0 0 8px;color:var(--accent)">التوسعات</h3>
 
-        <!-- توسعة 1 -->
         <div class="row" style="margin:6px 0"><strong>توسعه ( 1 )</strong></div>
         <div id="exp1SecurityList">
           <div class="row"><label>أمن 1</label><input class="input role" value="H-396" data-role="أمن 1"></div>
@@ -143,7 +138,6 @@
           <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
         </div>
 
-        <!-- توسعة 2 -->
         <div class="row" style="margin:10px 0 6px"><strong>توسعه ( 2 )</strong></div>
         <div id="exp2SecurityList">
           <div class="row"><label>أمن 1</label><input class="input role" value="H-407" data-role="أمن 1"></div>
@@ -154,7 +148,6 @@
           <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
         </div>
 
-        <!-- توسعة 3 -->
         <div class="row" style="margin:10px 0 6px"><strong>توسعه ( 3 )</strong></div>
         <div id="exp3SecurityList">
           <div class="row"><label>أمن 1</label><input class="input role" value="H-000" data-role="أمن 1"></div>
@@ -165,7 +158,6 @@
           <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
         </div>
 
-        <!-- توسعة 4 -->
         <div class="row" style="margin:10px 0 6px"><strong>توسعه ( 4 )</strong></div>
         <div id="exp4SecurityList">
           <div class="row"><label>أمن 1</label><input class="input role" value="H-000" data-role="أمن 1"></div>
@@ -177,7 +169,6 @@
         </div>
       </div>
 
-      <!-- notes -->
       <div class="section" id="notesSection">
         <div class="row"><label>ملاحظة رئيسية</label><input id="noteField" class="input" value=""></div>
         <div class="row" style="align-items:flex-start">
@@ -218,11 +209,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const m = labelText.trim().match(/(\d+)\s*$/);
       return m ? m[1] : '';
     }
+
+    // formatLine: لا تضيف "توجيه و منشن"
     function formatLine(roleName, value){
       const n = extractSuffixNumber(roleName);
       return roleName + ' : ' + value + (n ? ' | ت ' + n : '');
     }
 
+    // قراءة قيمة الصف: إذا مفعل خيار اللاعب فخذ قيمة حقل المنشن (نص حر) وإلا خذ قيمة حقل .role
     function readRowValue(row){
       if (!row) return null;
       const roleName = (row.querySelector('label')||{}).textContent || '';
@@ -232,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let val = 'H-000';
       if (playerChk && playerChk.checked){
         const raw = (mention && mention.value) ? mention.value.trim() : '';
-        val = raw ? (raw.startsWith('@')?raw:('@'+raw)) : '@';
+        val = raw ? raw : '@';
       } else if (codeInput){
         val = (codeInput.value && codeInput.value.trim()) ? codeInput.value.trim() : 'H-000';
       }
@@ -295,23 +289,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (noteItems.length){
         noteItems.forEach(it=>{
-          const playerChk = it.querySelector('.playerChk');
-          const mention = it.querySelector('.playerMention');
           const code = it.dataset.code||'';
           const count = it.dataset.count||'';
           const type = it.dataset.type||'';
-          let line = '';
-          if (playerChk && playerChk.checked){
-            const raw = (mention && mention.value)?mention.value.trim():'';
-            const m = raw ? (raw.startsWith('@')?raw:('@'+raw)) : '@';
-            line = m + (type ? (' ' + type) : '') + (count ? (' ' + count) : '');
-          } else {
-            const parts = [];
-            if (code) parts.push(code + ':');
-            if (count) parts.push(count);
-            if (type) parts.push(type);
-            line = parts.join(' ');
-          }
+          const parts = [];
+          if (code) parts.push(code + ':');
+          if (count) parts.push(count);
+          if (type) parts.push(type);
+          const line = parts.join(' ');
           if (line) out.push(line);
         });
       }
@@ -320,7 +305,63 @@ document.addEventListener('DOMContentLoaded', () => {
       return out.join('\n');
     }
 
-    // Notes helpers
+    // --- Add player mention controls to each role row (appended, بدون قائمة أسماء) ---
+    function attachPlayerControlToRow(row){
+      if (!row || row.querySelector('.playerControl')) return;
+      if (!row.querySelector('.role')) return;
+
+      const control = document.createElement('div');
+      control.className = 'playerControl';
+      control.dir = 'rtl';
+
+      const chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'playerChk';
+      chk.title = 'لاعب معتمد (اضغط لإظهار حقل الاسم)';
+
+      const lbl = document.createElement('span');
+      lbl.textContent = 'لاعب';
+      lbl.style.fontSize = '13px';
+      lbl.style.color = '#ddd';
+
+      const mention = document.createElement('input');
+      mention.type = 'text';
+      mention.className = 'playerMention';
+      mention.placeholder = '@اسم أو كود';
+      mention.setAttribute('dir', 'rtl');
+      mention.style.display = 'none';
+
+      // No datalist / no suggestions — user types الاسم يدوياً
+      chk.addEventListener('change', () => {
+        mention.style.display = chk.checked ? 'inline-block' : 'none';
+        if (!chk.checked) mention.value = '';
+      });
+
+      control.appendChild(chk);
+      control.appendChild(lbl);
+      control.appendChild(mention);
+
+      // Append so original label+input order stays the same
+      row.appendChild(control);
+    }
+
+    // Attach to existing rows
+    document.querySelectorAll('.row').forEach(r => attachPlayerControlToRow(r));
+
+    // Observe for future added rows
+    const observer = new MutationObserver(muts => {
+      muts.forEach(m => {
+        m.addedNodes.forEach(n => {
+          if (n.nodeType === 1 && n.matches('.row')) attachPlayerControlToRow(n);
+          if (n.querySelectorAll) {
+            n.querySelectorAll('.row').forEach(r => attachPlayerControlToRow(r));
+          }
+        });
+      });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Notes helpers (unchanged)
     function formatNoteText(code,count,type){
       if (!code && !count && !type) return '';
       const parts = [];
@@ -336,18 +377,9 @@ document.addEventListener('DOMContentLoaded', () => {
       wrapper.dataset.code = code||'';
       wrapper.dataset.count = count||'';
       wrapper.dataset.type = type||'';
-      wrapper.dataset.mention = '';
 
       const txt = document.createElement('span'); txt.className='note-text';
       txt.textContent = formatNoteText(code,count,type);
-
-      const playerWrap = document.createElement('div'); playerWrap.className='player-wrap';
-      const chk = document.createElement('input'); chk.type='checkbox'; chk.className='playerChk';
-      const lbl = document.createElement('span'); lbl.textContent='لاعب';
-      const mention = document.createElement('input'); mention.className='playerMention'; mention.placeholder='@player'; mention.style.display='none';
-      chk.addEventListener('change', ()=>{ mention.style.display = chk.checked ? 'inline-block' : 'none'; if (!chk.checked) mention.value=''; });
-      mention.addEventListener('input', ()=> wrapper.dataset.mention = mention.value.trim());
-      playerWrap.appendChild(chk); playerWrap.appendChild(lbl); playerWrap.appendChild(mention);
 
       const actions = document.createElement('div');
       const edit = document.createElement('button'); edit.type='button'; edit.textContent='تعديل'; edit.className='edit-btn';
@@ -356,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
       edit.addEventListener('click', ()=> enterEditMode(wrapper));
       actions.appendChild(edit); actions.appendChild(del);
 
-      wrapper.appendChild(txt); wrapper.appendChild(playerWrap); wrapper.appendChild(actions);
+      wrapper.appendChild(txt); wrapper.appendChild(actions);
       return wrapper;
     }
 
@@ -364,7 +396,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentCode = wrapper.dataset.code||'';
       const currentCount = wrapper.dataset.count||'';
       const currentType = wrapper.dataset.type||'';
-      const currentMention = wrapper.dataset.mention||'';
       const txt = wrapper.querySelector('.note-text');
       if (!txt) return;
       const editor = document.createElement('div'); editor.style.display='flex'; editor.style.gap='8px'; editor.style.alignItems='center';
@@ -378,10 +409,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (v === currentType) o.selected = true;
         typeSel.appendChild(o);
       });
-      const chk = document.createElement('input'); chk.type='checkbox';
-      const mentionIn = document.createElement('input'); mentionIn.className='playerMention'; mentionIn.placeholder='@player'; mentionIn.value = currentMention || '';
-      if (currentMention) mentionIn.style.display = 'inline-block'; else mentionIn.style.display = 'none';
-      chk.addEventListener('change', ()=> mentionIn.style.display = chk.checked ? 'inline-block' : 'none');
       const save = document.createElement('button'); save.type='button'; save.className='add-btn'; save.textContent='حفظ';
       const cancel = document.createElement('button'); cancel.type='button'; cancel.className='del-btn'; cancel.textContent='إلغاء';
 
@@ -389,21 +416,14 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.dataset.code = codeIn.value.trim();
         wrapper.dataset.count = countIn.value.trim();
         wrapper.dataset.type = typeSel.value;
-        wrapper.dataset.mention = chk.checked && mentionIn.value.trim() ? mentionIn.value.trim() : '';
         txt.textContent = formatNoteText(wrapper.dataset.code, wrapper.dataset.count, wrapper.dataset.type);
         editor.replaceWith(txt);
-        const notePlayerChk = wrapper.querySelector('.playerChk');
-        const noteMention = wrapper.querySelector('.playerMention');
-        if (notePlayerChk && noteMention){
-          if (wrapper.dataset.mention){ notePlayerChk.checked=true; noteMention.value = wrapper.dataset.mention; noteMention.style.display='inline-block'; }
-          else { notePlayerChk.checked=false; noteMention.value=''; noteMention.style.display='none'; }
-        }
       });
 
       cancel.addEventListener('click', ()=> editor.replaceWith(txt));
 
       editor.appendChild(codeIn); editor.appendChild(countIn); editor.appendChild(typeSel);
-      editor.appendChild(chk); editor.appendChild(mentionIn); editor.appendChild(save); editor.appendChild(cancel);
+      editor.appendChild(save); editor.appendChild(cancel);
       txt.replaceWith(editor);
     }
 
