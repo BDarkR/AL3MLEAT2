@@ -22,7 +22,7 @@ body::before{
   pointer-events:none;
   background:
     linear-gradient(180deg, rgba(3,6,7,0.66), rgba(3,6,7,0.66)),
-    url('bg.jpg') center/cover no-repeat; /* ضع صورة الخلفية باسم bg.jpg في نفس المجلد أو غيّر المسار */
+    url('1.png') center/cover no-repeat; /* ضع صورة الخلفية باسم bg.jpg في نفس المجلد أو غيّر المسار */
   filter: blur(2px) saturate(80%);
   opacity:0.95;
 }
@@ -111,3 +111,4 @@ body::before{
 
 /* إخفاء عنصر .bg-mark إذا كان موجود */
 .bg-mark{display:none !important}
+
