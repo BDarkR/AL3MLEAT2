@@ -4,7 +4,103 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>تقرير العمليات - الميناء (نمذج التوسعات)</title>
-  https://github.com/BDarkR/AL3MLEAT1/blob/main/index.html#L103
+<link href="./style.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{ --accent:#27ae60; --muted:#9b9b9b; --bg:#0b0b0b; --card:#1d1c1c; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Cairo', system-ui, Arial, sans-serif;
+      background:var(--bg);
+      color:#eee;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:18px;
+    }
+
+    .bg-mark{
+      position:fixed;
+      inset:0;
+      width:100%; height:100%;
+      background: linear-gradient(rgba(11,11,11,0.62), rgba(11,11,11,0.62)), url("./1.png") center/cover no-repeat;
+      pointer-events:none;
+      filter:blur(1.8px);
+      transform: scale(1.02);
+      opacity:0.95;
+      z-index:-1;
+      background-blend-mode:multiply;
+    }
+
+    .top-nav{padding:12px 18px;}
+    .top-nav nav { display:flex; gap:8px; align-items:center; justify-content:flex-start; flex-wrap:wrap; }
+    .btn-pill {
+      display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:6px 14px;
+      height:34px; line-height:1; font-size:14px; border-radius:18px; font-weight:700; white-space:nowrap;
+    }
+    .btn-pill.outline { background:transparent; color:var(--accent); border:1px solid var(--accent); }
+    .btn-pill.filled { background:var(--accent); color:#fff; border:1px solid var(--accent); }
+
+    .card{
+      max-width:1100px;
+      margin:0 auto;
+      background:linear-gradient(#1a1a1a,#212121);
+      border-radius:12px;
+      padding:18px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.6);
+    }
+
+    .title{ text-align:center; color:var(--accent); margin:0 0 6px; font-size:26px; letter-spacing:1px; }
+    .small-note{ color:var(--muted); font-size:13px; margin-bottom:8px; text-align:right; }
+
+    .section { margin-bottom:18px; border-top:1px dashed rgba(255,255,255,0.03); padding-top:12px; }
+    .section h3 {
+      margin: 10px 0 6px;
+      font-size:16px;
+      color:var(--accent);
+    }
+
+    .row { display:flex; gap:8px; align-items:center; margin-bottom:10px; }
+    .row label { min-width:160px; font-size:14px; color:#ddd; }
+    .row .input { flex:1; margin-bottom:0; padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); background:#222; color:#ddd }
+
+    .add-btn { background:transparent; color:var(--accent); border:1px dashed rgba(39,174,96,0.35); padding:6px 10px; border-radius:8px; cursor:pointer; }
+    .controls { display:flex; gap:8px; margin-top:10px; }
+    .report-output { width:100%; min-height:220px; resize:vertical; padding:12px; background:#222; color:#ddd; border-radius:8px; border:1px solid rgba(255,255,255,0.03); white-space:pre-wrap; direction:rtl; }
+
+    .del-btn { background:transparent; border:1px solid rgba(255,255,255,0.06); color:#ff6b6b; padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
+    .edit-btn { background:transparent; border:1px dashed rgba(255,255,255,0.06); color:#ffd36b; padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
+    .hide-btn { background:transparent; border:1px solid rgba(255,255,255,0.06); color:#9b9b9b; padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
+
+    .role.duplicate { border-color:#e74c3c !important; color:#ffb3b3 !important; background:rgba(231,76,60,0.04); }
+    .row label.duplicate-label { color:#ff6b6b !important; }
+    #dupWarning { color:#ff6b6b; display:none; margin-top:8px; font-size:13px; }
+
+    .player-wrap { display:flex; gap:6px; align-items:center; }
+    .playerChk { width:18px; height:18px; cursor:pointer; }
+    .playerMention { width:160px; padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); background:#222; color:#ddd; display:none; font-size:13px; }
+
+    /* keep hide/show control visible when JS hides row */
+    .hidden-row > *:not(.hide-btn):not(.del-btn) { display: none !important; }
+    .hidden-row > .hide-btn { color: #27ae60; border-color: rgba(39,174,96,0.35); background: rgba(0,0,0,0.06); }
+    .hidden-row { align-items:center; }
+
+    .note-item{ display:flex; gap:8px; align-items:center; justify-content:space-between; padding:6px 8px; border-radius:6px; }
+    .note-text{ color:#ddd; flex:1; padding-right:8px; }
+    .note-actions{ display:flex; gap:6px; align-items:center; margin-left:8px; }
+
+    @media (max-width:980px){
+      .card{width:92%; padding:16px;}
+      .title{font-size:22px}
+      .row label{min-width:120px}
+    }
+    @media (max-width:480px){
+      .card{width:92%}
+      .title{font-size:20px}
+      .row label{min-width:100px}
+    }
+  </style>
 </head>
 <body>
   <section class="card">
