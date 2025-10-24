@@ -17,37 +17,28 @@ body{
 }
 
 /* خلفية كاملة مع صورة + طبقة تغميق */
-/* ضع صورة الخلفية في المسار: ./images/bg-hero.jpg أو عدّل المسار حسب مكان الصورة */
+/* تأكد أن ملف الصورة موجود في نفس المجلد مع index.html و style.css واسمه: 1.png
+   إن كان اسم الصورة مختلف غيّر المسار إلى url('اسم-الصورة.png') */
 .bg-mark{
   position:fixed;
-  inset:0; /* top:0; right:0; bottom:0; left:0; — يملأ الشاشة */
+  inset:0; /* يملأ الشاشة */
   width:100%;
   height:100%;
   /* تركيبة: طبقة تغميق فوق الصورة */
   background:
     linear-gradient(rgba(11,11,11,0.55), rgba(11,11,11,0.55)),
-    url("./1.png") center/cover no-repeat;
+    url("1.png") center/cover no-repeat;
   pointer-events:none;
   filter:blur(1.5px);
   opacity:0.95;
   z-index:-1; /* تحت المحتوى */
 }
 
-/* إذا أردت خلفية أصغر أو علامة (كما في التصميم الأصلي) بدل التغطية الكاملة،
-   استبدل الخصائص أعلاه بالنسخة التالية (معلّقة):
+/* بعض أنماط بديلة مشروحة
 .bg-mark{
-  position:fixed;
-  right:0;
-  bottom:0;
-  width:60vmin;
-  height:60vmin;
   background:
-    radial-gradient(circle at center, rgba(255,255,255,0.02), transparent 30%),
-    url("./images/bg-hero.jpg") center/contain no-repeat;
-  pointer-events:none;
-  filter:blur(2px);
-  opacity:0.8;
-  z-index:-1;
+    linear-gradient(rgba(11,11,11,0.55), rgba(11,11,11,0.55)),
+    url("./images/bg-hero.jpg") center/cover no-repeat;
 }
 */
 
@@ -63,8 +54,9 @@ body{
   cursor:pointer;
 }
 
+/* غلاف لتوسيط المحتوى عموديًا وأفقيًا */
 .center-wrap{
-  min-height:calc(100vh - 100px);
+  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -74,6 +66,7 @@ body{
 /* تأكد أن البطاقة أعلى الخلفية */
 .card{
   width:420px;
+  max-width:92%;
   background:linear-gradient(#1a1a1a, #212121);
   border-radius:12px;
   padding:28px;
@@ -191,5 +184,3 @@ body{
   .title{font-size:20px}
   .input.small{max-width:100%}
 }
-
-
