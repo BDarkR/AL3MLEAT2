@@ -1,282 +1,132 @@
+/* نسخة مُعدّلة من style.css
+   التعديلات:
+   - جعل الحقول و القوائم (select & inputs & textarea) مظلمة (أسود/رمادي داكن) مع نص أبيض
+   - تلوين زر "انشاء التقرير" باللون الأخضر وشكله ممتد / مستدير كما في الصورة
+   - تأثير حدود خضراء عند التركيز على الحقول والقوائم
+   - محاولة تعديل مظهر العناصر الداخلية للقائمة (option) قدر الإمكان عبر CSS
+*/
+
+/* عام */
 :root{
-  --bg:#0b0b0b;
-  --card:#141414;
-  --muted:#9b9b9b;
-  --accent:#27ae60; /* أخضر */
-  --accent-2: rgba(39,174,96,0.12);
+  --bg: #0f0f10;
+  --panel: #161616;
+  --panel-2: #1c1c1c;
+  --muted: #a8a8a8;
+  --accent-green: #28b463; /* أخضر مطابق للمثال */
+  --accent-blue: #1e66d0;
+  --input-border: #242424;
+  --radius: 8px;
 }
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family:'Cairo', system-ui, Arial, sans-serif;
-  background:var(--bg);
-  color:#e6e6e6;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  direction:rtl;
-}
+*{box-sizing:border-box;font-family: 'Cairo', system-ui, sans-serif;direction:rtl}
+html,body{height:100%;margin:0;background:
+  linear-gradient(180deg, #0b0b0c 0%, #131313 100%);color:#eee}
 
-/* الخلفية: صورة + تغميق + تمويه */
-.bg-mark{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  background:
-    linear-gradient(rgba(6,6,6,0.65), rgba(6,6,6,0.65)),
-    url("1.png") center/cover no-repeat;
-  filter:blur(2px);
-  opacity:0.95;
-  pointer-events:none;
-  z-index:0;
-}
+/* الخلفية و الكرت */
+.bg-mark{position:fixed;inset:0;opacity:.05;background:
+  radial-gradient(ellipse at 10% 10%, rgba(0,0,0,.6), transparent 20%),
+  radial-gradient(ellipse at 90% 90%, rgba(255,255,255,.02), transparent 30%);pointer-events:none}
 
-/* top pills */
-.top-nav{
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  padding:18px 24px;
-  position:relative;
-  z-index:2;
-}
-.pill{
-  padding:8px 18px;
-  border-radius:999px;
-  background:rgba(255,255,255,0.03);
-  color:#d1d1d1;
-  font-weight:600;
-  border:1px solid rgba(255,255,255,0.02);
-}
-.pill.secondary{
-  background:var(--accent);
-  color:#07140b;
-  box-shadow:0 3px 10px rgba(39,174,96,0.12);
-}
-
-/* تمركز البطاقة */
-.center-wrap{
-  min-height:calc(100vh - 120px);
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-  padding:28px 18px 60px;
-  z-index:2;
-  position:relative;
-}
-
-/* البطاقة */
+.center-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px}
 .card{
-  width:820px;
-  max-width:96%;
-  background:linear-gradient(180deg,#111,#1a1a1a);
-  border-radius:12px;
-  padding:26px;
-  box-shadow:0 12px 40px rgba(0,0,0,0.6);
-  border:1px solid rgba(255,255,255,0.03);
-  position:relative;
-  z-index:3;
+  width:980px;max-width:96%;background:linear-gradient(180deg,var(--panel),var(--panel-2));
+  border-radius:12px;padding:22px;box-shadow:0 6px 30px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.03)
 }
+.title{margin:0 0 6px 0;font-size:20px;font-weight:700;color:#fff}
+.small-note{margin:0 0 14px 0;color:var(--muted);font-size:13px}
 
-/* العنوان */
-.title{
-  text-align:center;
-  color:var(--accent);
-  margin:6px 0 2px;
-  font-size:28px;
-  font-weight:700;
-}
-.small-note{
-  text-align:center;
-  color:var(--muted);
-  margin:0 0 18px;
-  font-size:13px;
-}
+/* صفوف و اقسام */
+.section{margin-bottom:14px;padding:6px 0}
+.section-title{margin:6px 0 10px 0;color:#ddd;font-weight:600}
+.row{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.row label{min-width:110px;color:#ddd;font-size:14px}
+.input{flex:1;padding:10px 12px;border-radius:8px;background:#0b0b0b;border:1px solid var(--input-border);color:#fff;outline:none}
+.input.small{width:120px;padding:8px 10px;font-size:13px}
+.input[readonly]{background:transparent;border:1px dashed rgba(255,255,255,.04);color:#ccc}
 
-/* شبكة الفورم */
-.form-grid{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
+/* hover & focus for inputs */
+.input:focus, .input:active{border-color: rgba(40,180,99,.95);box-shadow:0 0 0 4px rgba(40,180,99,.06)}
 
-/* section title */
-.section-title{
-  color:var(--accent);
-  font-weight:700;
-  margin:18px 0 10px;
-  padding-right:6px;
-  font-size:16px;
-  border-radius:6px;
-}
-
-/* صفوف الشبكة */
-.row-grid{
-  display:grid;
-  grid-template-columns:220px 1fr; /* label | input */
-  gap:12px;
-  align-items:center;
-  padding:10px 6px;
-  border-radius:8px;
-  transition:background .15s;
-}
-.row-grid:not(.full-row):hover{ background: linear-gradient(90deg, rgba(255,255,255,0.01), transparent); }
-
-/* عمود التسمية */
-.label-col{
+/* select styling (الخيار الأسود مع نص أبيض) */
+select.input{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #fff 50%),
+    linear-gradient(135deg, #fff 50%, transparent 50%),
+    linear-gradient(#0b0b0b, #0b0b0b);
+  background-position:
+    calc(100% - 18px) calc(1em + 2px),
+    calc(100% - 13px) calc(1em + 2px),
+    0 0;
+  background-size: 6px 6px, 6px 6px, 100% 100%;
+  background-repeat: no-repeat;
+  padding-right:36px;
+  color:#fff;
   text-align:right;
-  color:var(--muted);
-  font-size:14px;
-  padding-right:8px;
+  border:1px solid var(--input-border);
 }
 
-/* عمود الحقول */
-.input-col{
-  display:flex;
-  gap:10px;
-  align-items:center;
+/* خيارات القائمة عند فتحها (قد يختلف التوافق بين المتصفحات) */
+select.input option{
+  background: #0b0b0b;
+  color: #fff;
 }
+/* لتمييز الاختيار */
+select.input option:checked{ background: var(--accent-blue); color:#fff }
 
-/* الحقول الاساسية */
-.input{
-  width:100%;
-  padding:12px 14px;
-  border-radius:10px;
-  background:rgba(255,255,255,0.02);
-  color:#e9e9e9;
-  border:1px solid rgba(255,255,255,0.03);
-  outline:none;
-  font-size:14px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.01);
-}
-
-/* مظهر الحقول الصغيرة داخل قسم الإضافة */
-.input.small{ padding:9px 10px; font-size:13px; border-radius:8px; }
-.note-input.code{ width:190px; max-width:40%; }
-.note-input.count{ width:90px; max-width:18%; }
-.note-input.type{ width:120px; max-width:22%; }
-
-/* ترتيب اعمدة الادخال في سطر الإضافة */
-.note-add-cols{ display:flex; gap:10px; align-items:center; width:100%; justify-content:flex-start; }
-
-/* زر إضافة منقّط أخضر (مطابق للصورة) */
-.add-btn{
-  padding:8px 12px;
-  border-radius:8px;
-  background:transparent;
-  color:var(--accent);
-  border:1.6px dashed rgba(39,174,96,0.45);
-  font-weight:700;
-  cursor:pointer;
-}
-
-/* قائمة الملاحظات */
-.notes-list{ display:flex; flex-direction:column; gap:8px; width:100%; }
-
-/* عنصر ملاحظة */
-.note-item{
-  display:flex;
-  gap:12px;
-  align-items:center;
-  background:rgba(255,255,255,0.01);
-  padding:10px;
-  border-radius:8px;
-  border:1px solid rgba(255,255,255,0.02);
-}
-.note-text{ color:#ddd; min-width:160px; font-size:14px; padding-right:6px; }
-.player-wrap{ display:flex; gap:8px; align-items:center; margin-left:auto; }
-.player-wrap .playerMention{ display:none; padding:6px 8px; border-radius:6px; background:rgba(255,255,255,0.02); color:#ddd; border:1px solid rgba(255,255,255,0.03); }
-
-/* أزرار التحرير والحذف داخل كل بند */
-.note-actions{ display:flex; gap:8px; }
-.edit-btn, .del-btn{
-  background:transparent;
-  border:1px solid rgba(255,255,255,0.03);
-  padding:6px 8px;
-  border-radius:6px;
-  color:var(--muted);
-  cursor:pointer;
-}
-
-/* زر اضافه بنمط منقط (عام) */
-.btn-dashed{
-  padding:8px 12px;
-  background:transparent;
-  color:var(--accent);
-  border:1.5px dashed rgba(39,174,96,0.35);
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:700;
-}
-
-/* الازرار الكبيرة */
+/* زر إضافة / أزرار عامة */
 .btn{
-  border:none;
-  padding:10px 18px;
-  border-radius:8px;
-  cursor:pointer;
+  padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.04);
+  background:transparent;color:#fff;cursor:pointer;font-weight:600;
+}
+.btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.06);color:#ddd}
+.btn.primary{
+  /* زر انشاء التقرير: أخضر ممتد كما في الصورة */
+  background:var(--accent-green);
+  color:#000;
+  border: none;
+  width:100%;
+  display:block;
+  padding:12px 16px;
+  border-radius:10px;
   font-weight:700;
+  box-shadow:0 2px 0 rgba(0,0,0,.15) inset;
 }
-.btn.primary.large{
-  width:100%;
-  background:var(--accent);
-  color:#07140b;
-  padding:12px 18px;
-  border-radius:12px;
-  font-size:15px;
-  box-shadow:0 6px 20px rgba(39,174,96,0.12);
-  transition:transform .08s ease, box-shadow .12s ease;
-}
-.btn.primary.large:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 30px rgba(39,174,96,0.15);
-}
-.full-width-btn{ display:block; width:100%; border-radius:12px; height:46px; }
+/* عندما يكون الزر داخل حاوية بعرض محدود، نجعله يمتد */
+.section > .btn.primary{max-width:100%;}
 
-/* زر النسخ الصغير */
-.btn.secondary.small{
-  background:transparent;
-  color:var(--accent);
-  border:1px solid rgba(39,174,96,0.18);
-  padding:8px 12px;
-  border-radius:8px;
+/* زر الإضافة الصغير على يسار الصور */
+.add-btn{
+  background:transparent;border:1px dashed rgba(40,180,99,.35);color:var(--accent-green);padding:8px;border-radius:8px;
 }
 
-/* مربع التقرير */
+/* منطقة الملاحظات / textarea */
 .report-output{
-  width:100%;
-  min-height:220px;
-  resize:vertical;
-  border-radius:8px;
-  background:rgba(0,0,0,0.45);
-  border:1px solid rgba(255,255,255,0.02);
-  color:#bfbfbf;
-  padding:12px;
-  font-size:13px;
-  margin-top:6px;
+  width:100%;min-height:160px;background:#0b0b0b;border-radius:8px;border:1px solid rgba(255,255,255,.03);
+  color:#ddd;padding:14px;resize:vertical;font-family:inherit;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.02);
 }
 
-/* التسمية الصغيرة فوق مربع التقرير */
-.report-caption{
-  text-align:right;
-  color:rgba(255,255,255,0.14);
-  font-size:13px;
-  margin-bottom:6px;
-  padding-right:6px;
+/* نمط لعناصر الملاحظة المضافة */
+.note-item{
+  display:flex;gap:8px;align-items:center;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,.02)
+}
+.note-text{color:#ddd;flex:1}
+.player-wrap{display:flex;align-items:center;gap:8px}
+.playerWrap input.playerMention{background:#0b0b0b;border:1px solid var(--input-border);color:#fff;padding:6px;border-radius:6px}
+
+/* أزرار التحرير والحذف */
+.edit-btn,.del-btn{background:transparent;border:1px solid rgba(255,255,255,.03);color:var(--muted);padding:6px;border-radius:6px}
+
+/* تجاوب */
+@media (max-width:640px){
+  .card{padding:16px}
+  .row{flex-direction:column;align-items:stretch}
+  .row label{min-width:auto}
+  .input.small{width:100%}
 }
 
-/* استجابة */
-@media (max-width:860px){
-  .card{ width:92%; padding:18px; }
-  .row-grid { grid-template-columns: 1fr; text-align:right; }
-  .label-col{ padding-right:0; margin-bottom:6px; }
-  .input-col{ flex-direction:column; align-items:stretch; }
-  .note-add-cols{ flex-direction:column; align-items:stretch; }
-  .note-input.code, .note-input.count, .note-input.type{ max-width:100%; width:100%; }
-  .title{ font-size:22px; }
-}
-
-/* تحسين تباين placeholders */
-.input::placeholder{ color: rgba(255,255,255,0.25); }
+/* تحسين مظهر السهم في المتصفح (Chrome/Edge) */
+select.input::-ms-expand{display:none}
