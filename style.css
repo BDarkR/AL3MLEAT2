@@ -1,9 +1,7 @@
-/* style.css — نسخة كاملة ومُعدّلة
-   التغييرات الأساسية:
-   - إصلاح عرض الخلفية (.bg-mark) عبر ضبط z-index ورفع الشفافية قليلاً
-   - ضبط .card ليظهر فوق الخلفية (position + z-index)
-   - تحسين مظهر الحقول، القوائم، والزر الأخضر "انشاء التقرير"
-   - تلوين الخيارات داخل select لتكون داكنة ونص أبيض
+/* style.css — نسخة مُحدّثة لاستخدام body::before كخلفية
+   نقاط مهمة:
+   - body::before يعطي خلفية ثابتة خلف كل العناصر (أكثر موثوقية من عناصر DOM التي قد تكون داخل stacking contexts)
+   - تأكد من عمل Ctrl+F5 بعد الاستبدال
 */
 
 :root{
@@ -21,24 +19,32 @@
 html,body{height:100%;margin:0;background:
   linear-gradient(180deg, #0b0b0c 0%, #131313 100%);color:#eee}
 
-/* الخلفية العامة (عنصر ثابت يغطي الصفحة) */
-.bg-mark{
+/* body::before كخلفية ثابتة وموثوقة */
+body{position:relative;/* يسمح باستخدام ::before */}
+
+/* الخلفية الأساسية (body::before) */
+body::before{
+  content:"";
   position:fixed;
   inset:0;
-  z-index:0;           /* تأكد أنها أسفل المحتوى */
-  opacity:.12;         /* ارفع الشفافية لتظهر التأثيرات */
+  z-index:0; /* تحت المحتوى */
+  pointer-events:none;
+  opacity:.18; /* ارفع لو لا تظهر بوضوح */
   background:
     radial-gradient(ellipse at 10% 10%, rgba(0,0,0,.6), transparent 20%),
     radial-gradient(ellipse at 90% 90%, rgba(255,255,255,.02), transparent 30%);
-  pointer-events:none;
+  /* بإمكانك تغيير الألوان والـopacity هنا للتجربة */
 }
+
+/* احتفظ بعنصر .bg-mark إن وُجد لكن اخفِه لتفادي تضارب */
+.bg-mark{display:none !important}
 
 /* غلاف البطاقة */
 .center-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px}
 .card{
   width:980px;max-width:96%;background:linear-gradient(180deg,var(--panel),var(--panel-2));
   border-radius:12px;padding:22px;box-shadow:0 6px 30px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.03);
-  position:relative;   /* يضمن ظهورها فوق .bg-mark */
+  position:relative;   /* يضمن ظهورها فوق ::before */
   z-index:1;
 }
 .title{margin:0 0 6px 0;font-size:20px;font-weight:700;color:#fff}
@@ -56,7 +62,7 @@ html,body{height:100%;margin:0;background:
 /* hover & focus for inputs */
 .input:focus, .input:active{border-color: rgba(40,180,99,.95);box-shadow:0 0 0 4px rgba(40,180,99,.06)}
 
-/* select styling (الخيار الأسود مع نص أبيض) */
+/* select styling */
 select.input{
   appearance: none;
   -webkit-appearance: none;
@@ -76,23 +82,16 @@ select.input{
   text-align:right;
   border:1px solid var(--input-border);
 }
-
-/* خيارات القائمة عند فتحها (قد يختلف التوافق بين المتصفحات) */
-select.input option{
-  background: #0b0b0b;
-  color: #fff;
-}
-/* لتظليل الاختيار في بعض المتصفحات */
+select.input option{ background: #0b0b0b; color: #fff; }
 select.input option:checked{ background: var(--accent-blue); color:#fff }
 
-/* زر إضافة / أزرار عامة */
+/* أزرار */
 .btn{
   padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.04);
   background:transparent;color:#fff;cursor:pointer;font-weight:600;
 }
 .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.06);color:#ddd}
 .btn.primary{
-  /* زر انشاء التقرير: أخضر ممتد كما في الصورة */
   background:var(--accent-green);
   color:#000;
   border: none;
@@ -103,22 +102,16 @@ select.input option:checked{ background: var(--accent-blue); color:#fff }
   font-weight:700;
   box-shadow:0 2px 0 rgba(0,0,0,.15) inset;
 }
-/* عندما يكون الزر داخل حاوية بعرض محدود، نجعله يمتد */
-.section > .btn.primary{max-width:100%;}
+.add-btn{ background:transparent;border:1px dashed rgba(40,180,99,.35);color:var(--accent-green);padding:8px;border-radius:8px; }
 
-/* زر الإضافة الصغير */
-.add-btn{
-  background:transparent;border:1px dashed rgba(40,180,99,.35);color:var(--accent-green);padding:8px;border-radius:8px;
-}
-
-/* منطقة الملاحظات / textarea */
+/* textarea */
 .report-output{
   width:100%;min-height:160px;background:#0b0b0b;border-radius:8px;border:1px solid rgba(255,255,255,.03);
   color:#ddd;padding:14px;resize:vertical;font-family:inherit;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.02);
 }
 
-/* نمط لعناصر الملاحظة المضافة */
+/* عناصر الملاحظة */
 .note-item{
   display:flex;gap:8px;align-items:center;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,.02)
 }
@@ -126,10 +119,8 @@ select.input option:checked{ background: var(--accent-blue); color:#fff }
 .player-wrap{display:flex;align-items:center;gap:8px}
 .player-wrap input.playerMention{background:#0b0b0b;border:1px solid var(--input-border);color:#fff;padding:6px;border-radius:6px}
 
-/* أزرار التحرير والحذف */
 .edit-btn,.del-btn{background:transparent;border:1px solid rgba(255,255,255,.03);color:var(--muted);padding:6px;border-radius:6px}
 
-/* تجاوب */
 @media (max-width:640px){
   .card{padding:16px}
   .row{flex-direction:column;align-items:stretch}
@@ -137,25 +128,5 @@ select.input option:checked{ background: var(--accent-blue); color:#fff }
   .input.small{width:100%}
 }
 
-/* تحسين مظهر السهم في المتصفح (Chrome/Edge) */
+/* تحسين مظهر السهم في المتصفح */
 select.input::-ms-expand{display:none}
-
-/* ملاحظة بديلة: لو لزم استخدام body::before كخلفية ثابتة
-   قم بإلغاء التعليق على الكود أدناه واستبدال .bg-mark إذا رغبت.
-*/
-
-/*
-body{position:relative}
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:0;
-  opacity:.12;
-  background:
-    radial-gradient(ellipse at 10% 10%, rgba(0,0,0,.6), transparent 20%),
-    radial-gradient(ellipse at 90% 90%, rgba(255,255,255,.02), transparent 30%);
-  pointer-events:none;
-}
-.card{ position:relative; z-index:1; }
-*/
