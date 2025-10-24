@@ -8,123 +8,125 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <section class="card">
-    <h1 class="title">تطبيق نموذج: تقرير العمليات في التوسعات</h1>
-    <p class="small-note">الصفحة مُعدة لتوليد التقرير بنفس تنسيق المثال الذي أرسلته — اضغط "انشاء التقرير".</p>
+  <!-- خلفية كاملة (عنصر HTML مطلوب لتطبيق .bg-mark) -->
+  <div class="bg-mark" aria-hidden="true"></div>
 
-    <form id="reportForm" onsubmit="return false;">
-      <div class="section">
-        <div class="row"><label>وقت استلام الشفت</label><input id="shiftTimeDisplay" class="input" value="6 صباحا" readonly></div>
-      </div>
+  <!-- غلاف للتمركز العمودي والأفقي -->
+  <div class="center-wrap">
+    <section class="card">
+      <h1 class="title">تطبيق نموذج: تقرير العمليات في التوسعات</h1>
+      <p class="small-note">الصفحة مُعدة لتوليد التقرير بنفس تنسيق المثال الذي أرسلته — اضغط "انشاء التقرير".</p>
 
-      <!-- Main groups (ردع - برق - صقر - سهم) -->
-      <div class="section">
-        <h3 class="section-title">العمليات الأساسية</h3>
-
-        <div id="radaList">
-          <div class="row"><label>ردع 1</label><input class="input role" value="H-000" data-role="ردع 1"></div>
-          <div class="row"><label>ردع 2</label><input class="input role" value="H-000" data-role="ردع 2"></div>
+      <form id="reportForm" onsubmit="return false;">
+        <div class="section">
+          <div class="row"><label>وقت استلام الشفت</label><input id="shiftTimeDisplay" class="input" value="6 صباحا" readonly></div>
         </div>
 
-        <div id="barqList" style="margin-top:8px">
-          <div class="row"><label>برق 1</label><input class="input role" value="H-000" data-role="برق 1"></div>
-          <div class="row"><label>برق 2</label><input class="input role" value="H-000" data-role="برق 2"></div>
-        </div>
+        <!-- Main groups (ردع - برق - صقر - سهم) -->
+        <div class="section">
+          <h3 class="section-title">العمليات الأساسية</h3>
 
-        <div id="saqrList" style="margin-top:8px">
-          <div class="row"><label>صقر 1</label><input class="input role" value="H-145" data-role="صقر 1"></div>
-          <div class="row"><label>صقر 2</label><input class="input role" value="H-000" data-role="صقر 2"></div>
-          <div class="row"><label>صقر 3</label><input class="input role" value="H-000" data-role="صقر 3"></div>
-          <div class="row"><label>صقر 4</label><input class="input role" value="H-000" data-role="صقر 4"></div>
-        </div>
+          <div id="radaList">
+            <div class="row"><label>ردع 1</label><input class="input role" value="H-000" data-role="ردع 1"></div>
+            <div class="row"><label>ردع 2</label><input class="input role" value="H-000" data-role="ردع 2"></div>
+          </div>
 
-        <div id="sahmList" style="margin-top:8px">
-          <div class="row"><label>سهم 1</label><input class="input role" value="H-000" data-role="سهم 1"></div>
-          <div class="row"><label>سهم 2</label><input class="input role" value="H-000" data-role="سهم 2"></div>
-          <div class="row"><label>سهم 3</label><input class="input role" value="H-000" data-role="سهم 3"></div>
-        </div>
-      </div>
+          <div id="barqList" style="margin-top:8px">
+            <div class="row"><label>برق 1</label><input class="input role" value="H-000" data-role="برق 1"></div>
+            <div class="row"><label>برق 2</label><input class="input role" value="H-000" data-role="برق 2"></div>
+          </div>
 
-      <!-- Expansions: each expansion has security (أمن) and hura (حرة) -->
-      <div class="section" id="expansions">
-        <h3 class="section-title">التوسعات</h3>
+          <div id="saqrList" style="margin-top:8px">
+            <div class="row"><label>صقر 1</label><input class="input role" value="H-145" data-role="صقر 1"></div>
+            <div class="row"><label>صقر 2</label><input class="input role" value="H-000" data-role="صقر 2"></div>
+            <div class="row"><label>صقر 3</label><input class="input role" value="H-000" data-role="صقر 3"></div>
+            <div class="row"><label>صقر 4</label><input class="input role" value="H-000" data-role="صقر 4"></div>
+          </div>
 
-        <!-- توسعة 1 -->
-        <div class="row expansion-row"><strong class="expansion-title">توسعه ( 1 )</strong></div>
-        <div id="exp1SecurityList">
-          <div class="row"><label>أمن 1</label><input class="input role" value="H-396" data-role="أمن 1"></div>
-          <div class="row"><label>أمن 2</label><input class="input role" value="H-410" data-role="أمن 2"></div>
-        </div>
-        <div id="exp1HuraList" style="margin-top:6px">
-          <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
-          <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
-        </div>
-
-        <!-- توسعة 2 -->
-        <div class="row expansion-row"><strong class="expansion-title">توسعه ( 2 )</strong></div>
-        <div id="exp2SecurityList">
-          <div class="row"><label>أمن 1</label><input class="input role" value="H-407" data-role="أمن 1"></div>
-          <div class="row"><label>أمن 2</label><input class="input role" value="H-294" data-role="أمن 2"></div>
-        </div>
-        <div id="exp2HuraList" style="margin-top:6px">
-          <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
-          <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
-        </div>
-
-        <!-- توسعة 3 -->
-        <div class="row expansion-row"><strong class="expansion-title">توسعه ( 3 )</strong></div>
-        <div id="exp3SecurityList">
-          <div class="row"><label>أمن 1</label><input class="input role" value="H-000" data-role="أمن 1"></div>
-          <div class="row"><label>أمن 2</label><input class="input role" value="H-000" data-role="أمن 2"></div>
-        </div>
-        <div id="exp3HuraList" style="margin-top:6px">
-          <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
-          <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
-        </div>
-
-        <!-- توسعة 4 -->
-        <div class="row expansion-row"><strong class="expansion-title">توسعه ( 4 )</strong></div>
-        <div id="exp4SecurityList">
-          <div class="row"><label>أمن 1</label><input class="input role" value="H-000" data-role="أمن 1"></div>
-          <div class="row"><label>أمن 2</label><input class="input role" value="H-000" data-role="أمن 2"></div>
-        </div>
-        <div id="exp4HuraList" style="margin-top:6px">
-          <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
-          <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
-        </div>
-      </div>
-
-      <!-- notes -->
-      <div class="section" id="notesSection">
-        <div class="row"><label>ملاحظة رئيسية</label><input id="noteField" class="input" value=""></div>
-        <div class="row" style="align-items:flex-start">
-          <label>إضافة بند</label>
-          <div style="flex:1;display:flex;gap:8px;align-items:center">
-            <input id="noteCode" class="input small" placeholder="مثال: H-018">
-            <input id="noteCount" class="input small" placeholder="ت 1">
-            <select id="noteType" class="input small">
-              <option value="">نوع</option><option value="حرة">حرة</option><option value="سهم">سهم</option><option value="صقر">صقر</option>
-            </select>
-            <button type="button" id="addNoteBtn" class="add-btn">＋ إضافة</button>
+          <div id="sahmList" style="margin-top:8px">
+            <div class="row"><label>سهم 1</label><input class="input role" value="H-000" data-role="سهم 1"></div>
+            <div class="row"><label>سهم 2</label><input class="input role" value="H-000" data-role="سهم 2"></div>
+            <div class="row"><label>سهم 3</label><input class="input role" value="H-000" data-role="سهم 3"></div>
           </div>
         </div>
 
-        <div class="row" style="align-items:flex-start">
-          <label>ملاحظات مضافة</label>
-          <div id="notesList" style="flex:1;display:flex;flex-direction:column;gap:6px"></div>
+        <!-- Expansions -->
+        <div class="section" id="expansions">
+          <h3 class="section-title">التوسعات</h3>
+
+          <div class="row expansion-row"><strong class="expansion-title">توسعه ( 1 )</strong></div>
+          <div id="exp1SecurityList">
+            <div class="row"><label>أمن 1</label><input class="input role" value="H-396" data-role="أمن 1"></div>
+            <div class="row"><label>أمن 2</label><input class="input role" value="H-410" data-role="أمن 2"></div>
+          </div>
+          <div id="exp1HuraList" style="margin-top:6px">
+            <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
+            <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
+          </div>
+
+          <div class="row expansion-row"><strong class="expansion-title">توسعه ( 2 )</strong></div>
+          <div id="exp2SecurityList">
+            <div class="row"><label>أمن 1</label><input class="input role" value="H-407" data-role="أمن 1"></div>
+            <div class="row"><label>أمن 2</label><input class="input role" value="H-294" data-role="أمن 2"></div>
+          </div>
+          <div id="exp2HuraList" style="margin-top:6px">
+            <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
+            <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
+          </div>
+
+          <div class="row expansion-row"><strong class="expansion-title">توسعه ( 3 )</strong></div>
+          <div id="exp3SecurityList">
+            <div class="row"><label>أمن 1</label><input class="input role" value="H-000" data-role="أمن 1"></div>
+            <div class="row"><label>أمن 2</label><input class="input role" value="H-000" data-role="أمن 2"></div>
+          </div>
+          <div id="exp3HuraList" style="margin-top:6px">
+            <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
+            <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
+          </div>
+
+          <div class="row expansion-row"><strong class="expansion-title">توسعه ( 4 )</strong></div>
+          <div id="exp4SecurityList">
+            <div class="row"><label>أمن 1</label><input class="input role" value="H-000" data-role="أمن 1"></div>
+            <div class="row"><label>أمن 2</label><input class="input role" value="H-000" data-role="أمن 2"></div>
+          </div>
+          <div id="exp4HuraList" style="margin-top:6px">
+            <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
+            <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
+          </div>
         </div>
-      </div>
 
-      <div style="display:flex;gap:8px;align-items:center" class="section">
-        <button id="buildReport" type="button" class="btn primary">انشاء التقرير</button>
-        <button id="copyReport" type="button" class="btn secondary" style="display:none">نسخ التقرير</button>
-      </div>
+        <!-- notes -->
+        <div class="section" id="notesSection">
+          <div class="row"><label>ملاحظة رئيسية</label><input id="noteField" class="input" value=""></div>
+          <div class="row" style="align-items:flex-start">
+            <label>إضافة بند</label>
+            <div style="flex:1;display:flex;gap:8px;align-items:center">
+              <input id="noteCode" class="input small" placeholder="مثال: H-018">
+              <input id="noteCount" class="input small" placeholder="ت 1">
+              <select id="noteType" class="input small">
+                <option value="">نوع</option><option value="حرة">حرة</option><option value="سهم">سهم</option><option value="صقر">صقر</option>
+              </select>
+              <button type="button" id="addNoteBtn" class="add-btn">＋ إضافة</button>
+            </div>
+          </div>
 
-      <div style="margin-top:12px">
-        <textarea id="reportOutput" class="report-output" placeholder="سيظهر التقرير هنا بعد الضغط"></textarea>
-      </div>
-    </form>
-  </section>
+          <div class="row" style="align-items:flex-start">
+            <label>ملاحظات مضافة</label>
+            <div id="notesList" style="flex:1;display:flex;flex-direction:column;gap:6px"></div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center" class="section">
+          <button id="buildReport" type="button" class="btn primary">انشاء التقرير</button>
+          <button id="copyReport" type="button" class="btn secondary" style="display:none">نسخ التقرير</button>
+        </div>
+
+        <div style="margin-top:12px">
+          <textarea id="reportOutput" class="report-output" placeholder="سيظهر التقرير هنا بعد الضغط"></textarea>
+        </div>
+      </form>
+    </section>
+  </div>
 
 <script>
   // (الـJavaScript كما في الملف الأصلي — لم يتغير)
