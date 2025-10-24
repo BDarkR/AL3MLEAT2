@@ -210,225 +210,255 @@
   </section>
 
 <script>
-  // helper: format and line helpers
-  function extractSuffixNumber(labelText){
-    if (!labelText) return '';
-    const m = labelText.trim().match(/(\d+)\s*$/);
-    return m ? m[1] : '';
-  }
-  function formatLine(roleName, value){
-    const n = extractSuffixNumber(roleName);
-    return roleName + ' : ' + value + (n ? ' | ت ' + n : '');
-  }
-
-  // read value for a row (respect player mention if present)
-  function readRowValue(row){
-    if (!row) return null;
-    const roleName = (row.querySelector('label')||{}).textContent || '';
-    const codeInput = row.querySelector('.role');
-    const playerChk = row.querySelector('.playerChk');
-    const mention = row.querySelector('.playerMention');
-    let val = 'H-000';
-    if (playerChk && playerChk.checked){
-      const raw = (mention && mention.value) ? mention.value.trim() : '';
-      val = raw ? (raw.startsWith('@')?raw:('@'+raw)) : '@';
-    } else if (codeInput){
-      val = (codeInput.value && codeInput.value.trim()) ? codeInput.value.trim() : 'H-000';
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    // Helpers
+    function extractSuffixNumber(labelText){
+      if (!labelText) return '';
+      const m = labelText.trim().match(/(\d+)\s*$/);
+      return m ? m[1] : '';
     }
-    return { roleName, val };
-  }
+    function formatLine(roleName, value){
+      const n = extractSuffixNumber(roleName);
+      return roleName + ' : ' + value + (n ? ' | ت ' + n : '');
+    }
 
-  // build report exactly like sample with expansions 1..4
-  function buildReportText(){
-    const out = [];
-    const shiftLabel = 'الميناء';
-    const timeLabel = (document.getElementById('shiftTimeDisplay') && document.getElementById('shiftTimeDisplay').value) || '6 صباحا';
+    function readRowValue(row){
+      if (!row) return null;
+      const roleName = (row.querySelector('label')||{}).textContent || '';
+      const codeInput = row.querySelector('.role');
+      const playerChk = row.querySelector('.playerChk');
+      const mention = row.querySelector('.playerMention');
+      let val = 'H-000';
+      if (playerChk && playerChk.checked){
+        const raw = (mention && mention.value) ? mention.value.trim() : '';
+        val = raw ? (raw.startsWith('@')?raw:('@'+raw)) : '@';
+      } else if (codeInput){
+        val = (codeInput.value && codeInput.value.trim()) ? codeInput.value.trim() : 'H-000';
+      }
+      return { roleName, val };
+    }
 
-    out.push('***تقرير العمليات في التوسعات ***');
-    out.push('');
-    out.push('**تم استلام عمليات ' + shiftLabel + ' في تمام الساعه ' + timeLabel + ' **');
-    out.push('');
+    function buildReportText(){
+      const out = [];
+      const shiftLabel = 'الميناء';
+      const timeLabel = (document.getElementById('shiftTimeDisplay') && document.getElementById('shiftTimeDisplay').value) || '6 صباحا';
 
-    // main lists in order
-    ['radaList','barqList','saqrList','sahmList'].forEach(id=>{
-      const container = document.getElementById(id);
-      if (!container) return;
-      const rows = container.querySelectorAll('.row');
-      rows.forEach(r=>{
-        if (r.dataset.hidden==='true' || getComputedStyle(r).display==='none') return;
-        const data = readRowValue(r);
-        if (data && data.roleName) out.push(formatLine(data.roleName, data.val));
+      out.push('***تقرير العمليات في التوسعات ***');
+      out.push('');
+      out.push('**تم استلام عمليات ' + shiftLabel + ' في تمام الساعه ' + timeLabel + ' **');
+      out.push('');
+
+      ['radaList','barqList','saqrList','sahmList'].forEach(id=>{
+        const container = document.getElementById(id);
+        if (!container) return;
+        const rows = container.querySelectorAll('.row');
+        rows.forEach(r=>{
+          if (r.dataset.hidden==='true' || getComputedStyle(r).display==='none') return;
+          const data = readRowValue(r);
+          if (data && data.roleName) out.push(formatLine(data.roleName, data.val));
+        });
+        out.push('');
       });
-      out.push('');
-    });
 
-    // expansions 1..4 groups (each group prints its header then its security then its hura)
-    function appendExpansion(n){
-      out.push('**توسعه ( ' + n + ' ) **');
-      const sec = document.getElementById('exp'+n+'SecurityList');
-      if (sec){
-        const rows = sec.querySelectorAll('.row');
-        rows.forEach(r=>{
-          if (r.dataset.hidden==='true' || getComputedStyle(r).display==='none') return;
-          const d = readRowValue(r);
-          if (d && d.roleName) out.push(formatLine(d.roleName, d.val));
-        });
-      }
-      out.push('');
-      const hura = document.getElementById('exp'+n+'HuraList');
-      if (hura){
-        const rows = hura.querySelectorAll('.row');
-        rows.forEach(r=>{
-          if (r.dataset.hidden==='true' || getComputedStyle(r).display==='none') return;
-          const d = readRowValue(r);
-          if (d && d.roleName) out.push(formatLine(d.roleName, d.val));
-        });
-      }
-      out.push('');
-    }
-
-    appendExpansion(1);
-    appendExpansion(2);
-    appendExpansion(3);
-    appendExpansion(4);
-
-    // notes section
-    const noteItems = Array.from(document.querySelectorAll('#notesList .note-item'));
-    out.push('`ملاحظات التقرير :`');
-    out.push('');
-    if (document.getElementById('noteField').value.trim()){
-      out.push(document.getElementById('noteField').value.trim());
-    }
-    if (noteItems.length){
-      noteItems.forEach(it=>{
-        const playerChk = it.querySelector('.playerChk');
-        const mention = it.querySelector('.playerMention');
-        const code = it.dataset.code||'';
-        const count = it.dataset.count||'';
-        const type = it.dataset.type||'';
-        let line = '';
-        if (playerChk && playerChk.checked){
-          const raw = (mention && mention.value)?mention.value.trim():'';
-          const m = raw ? (raw.startsWith('@')?raw:('@'+raw)) : '@';
-          line = m + (type ? (' ' + type) : '') + (count ? (' ' + count) : '');
-        } else {
-          const parts = [];
-          if (code) parts.push(code + ':');
-          if (count) parts.push(count);
-          if (type) parts.push(type);
-          line = parts.join(' ');
+      function appendExpansion(n){
+        out.push('**توسعه ( ' + n + ' ) **');
+        const sec = document.getElementById('exp'+n+'SecurityList');
+        if (sec){
+          const rows = sec.querySelectorAll('.row');
+          rows.forEach(r=>{
+            if (r.dataset.hidden==='true' || getComputedStyle(r).display==='none') return;
+            const d = readRowValue(r);
+            if (d && d.roleName) out.push(formatLine(d.roleName, d.val));
+          });
         }
-        if (line) out.push(line);
+        out.push('');
+        const hura = document.getElementById('exp'+n+'HuraList');
+        if (hura){
+          const rows = hura.querySelectorAll('.row');
+          rows.forEach(r=>{
+            if (r.dataset.hidden==='true' || getComputedStyle(r).display==='none') return;
+            const d = readRowValue(r);
+            if (d && d.roleName) out.push(formatLine(d.roleName, d.val));
+          });
+        }
+        out.push('');
+      }
+
+      [1,2,3,4].forEach(appendExpansion);
+
+      const noteItems = Array.from(document.querySelectorAll('#notesList .note-item'));
+      out.push('`ملاحظات التقرير :`');
+      out.push('');
+      const mainNote = (document.getElementById('noteField')||{value:''}).value.trim();
+      if (mainNote) out.push(mainNote);
+
+      if (noteItems.length){
+        noteItems.forEach(it=>{
+          const playerChk = it.querySelector('.playerChk');
+          const mention = it.querySelector('.playerMention');
+          const code = it.dataset.code||'';
+          const count = it.dataset.count||'';
+          const type = it.dataset.type||'';
+          let line = '';
+          if (playerChk && playerChk.checked){
+            const raw = (mention && mention.value)?mention.value.trim():'';
+            const m = raw ? (raw.startsWith('@')?raw:('@'+raw)) : '@';
+            line = m + (type ? (' ' + type) : '') + (count ? (' ' + count) : '');
+          } else {
+            const parts = [];
+            if (code) parts.push(code + ':');
+            if (count) parts.push(count);
+            if (type) parts.push(type);
+            line = parts.join(' ');
+          }
+          if (line) out.push(line);
+        });
+      }
+
+      while (out.length && out[out.length-1]==='') out.pop();
+      return out.join('\n');
+    }
+
+    // Notes helpers
+    function formatNoteText(code,count,type){
+      if (!code && !count && !type) return '';
+      const parts = [];
+      if (code) parts.push(code + ':');
+      if (count) parts.push(count);
+      if (type) parts.push(type);
+      return parts.join(' ');
+    }
+
+    function createNoteItem(code,count,type){
+      const wrapper = document.createElement('div');
+      wrapper.className = 'note-item';
+      wrapper.dataset.code = code||'';
+      wrapper.dataset.count = count||'';
+      wrapper.dataset.type = type||'';
+      wrapper.dataset.mention = '';
+
+      const txt = document.createElement('span'); txt.className='note-text';
+      txt.textContent = formatNoteText(code,count,type);
+
+      const playerWrap = document.createElement('div'); playerWrap.className='player-wrap';
+      const chk = document.createElement('input'); chk.type='checkbox'; chk.className='playerChk';
+      const lbl = document.createElement('span'); lbl.textContent='لاعب';
+      const mention = document.createElement('input'); mention.className='playerMention'; mention.placeholder='@player'; mention.style.display='none';
+      chk.addEventListener('change', ()=>{ mention.style.display = chk.checked ? 'inline-block' : 'none'; if (!chk.checked) mention.value=''; });
+      mention.addEventListener('input', ()=> wrapper.dataset.mention = mention.value.trim());
+      playerWrap.appendChild(chk); playerWrap.appendChild(lbl); playerWrap.appendChild(mention);
+
+      const actions = document.createElement('div');
+      const edit = document.createElement('button'); edit.type='button'; edit.textContent='تعديل'; edit.className='edit-btn';
+      const del = document.createElement('button'); del.type='button'; del.textContent='حذف'; del.className='del-btn';
+      del.addEventListener('click', ()=> wrapper.remove());
+      edit.addEventListener('click', ()=> enterEditMode(wrapper));
+      actions.appendChild(edit); actions.appendChild(del);
+
+      wrapper.appendChild(txt); wrapper.appendChild(playerWrap); wrapper.appendChild(actions);
+      return wrapper;
+    }
+
+    function enterEditMode(wrapper){
+      const currentCode = wrapper.dataset.code||'';
+      const currentCount = wrapper.dataset.count||'';
+      const currentType = wrapper.dataset.type||'';
+      const currentMention = wrapper.dataset.mention||'';
+      const txt = wrapper.querySelector('.note-text');
+      if (!txt) return;
+      const editor = document.createElement('div'); editor.style.display='flex'; editor.style.gap='8px'; editor.style.alignItems='center';
+      const codeIn = document.createElement('input'); codeIn.className='input small'; codeIn.value=currentCode;
+      const countIn = document.createElement('input'); countIn.className='input small'; countIn.value=currentCount;
+      const typeSel = document.createElement('select'); typeSel.className='input small';
+      ['', 'حرة','سهم','صقر','برق','ردع'].forEach(v=>{
+        const o = document.createElement('option');
+        o.value = v;
+        o.textContent = v || 'نوع';
+        if (v === currentType) o.selected = true;
+        typeSel.appendChild(o);
+      });
+      const chk = document.createElement('input'); chk.type='checkbox';
+      const mentionIn = document.createElement('input'); mentionIn.className='playerMention'; mentionIn.placeholder='@player'; mentionIn.value = currentMention || '';
+      if (currentMention) mentionIn.style.display = 'inline-block'; else mentionIn.style.display = 'none';
+      chk.addEventListener('change', ()=> mentionIn.style.display = chk.checked ? 'inline-block' : 'none');
+      const save = document.createElement('button'); save.type='button'; save.className='add-btn'; save.textContent='حفظ';
+      const cancel = document.createElement('button'); cancel.type='button'; cancel.className='del-btn'; cancel.textContent='إلغاء';
+
+      save.addEventListener('click', ()=>{
+        wrapper.dataset.code = codeIn.value.trim();
+        wrapper.dataset.count = countIn.value.trim();
+        wrapper.dataset.type = typeSel.value;
+        wrapper.dataset.mention = chk.checked && mentionIn.value.trim() ? mentionIn.value.trim() : '';
+        txt.textContent = formatNoteText(wrapper.dataset.code, wrapper.dataset.count, wrapper.dataset.type);
+        editor.replaceWith(txt);
+        const notePlayerChk = wrapper.querySelector('.playerChk');
+        const noteMention = wrapper.querySelector('.playerMention');
+        if (notePlayerChk && noteMention){
+          if (wrapper.dataset.mention){ notePlayerChk.checked=true; noteMention.value = wrapper.dataset.mention; noteMention.style.display='inline-block'; }
+          else { notePlayerChk.checked=false; noteMention.value=''; noteMention.style.display='none'; }
+        }
+      });
+
+      cancel.addEventListener('click', ()=> editor.replaceWith(txt));
+
+      editor.appendChild(codeIn); editor.appendChild(countIn); editor.appendChild(typeSel);
+      editor.appendChild(chk); editor.appendChild(mentionIn); editor.appendChild(save); editor.appendChild(cancel);
+      txt.replaceWith(editor);
+    }
+
+    // Hook up add note button
+    const addNoteBtn = document.getElementById('addNoteBtn');
+    if (addNoteBtn) {
+      addNoteBtn.addEventListener('click', ()=>{
+        const code = (document.getElementById('noteCode')||{value:''}).value.trim();
+        const count = (document.getElementById('noteCount')||{value:''}).value.trim();
+        const type = (document.getElementById('noteType')||{value:''}).value;
+        if (!code && !count && !type) return;
+        const item = createNoteItem(code,count,type);
+        document.getElementById('notesList').appendChild(item);
+        document.getElementById('noteCode').value=''; document.getElementById('noteCount').value='';
+      });
+    } else console.warn('addNoteBtn not found');
+
+    // Build & copy report
+    const buildBtn = document.getElementById('buildReport');
+    const copyBtn = document.getElementById('copyReport');
+    const output = document.getElementById('reportOutput');
+    if (buildBtn && output){
+      buildBtn.addEventListener('click', ()=>{
+        try {
+          output.value = buildReportText();
+          if (copyBtn) copyBtn.style.display='inline-block';
+          output.focus(); output.select();
+        } catch (err) {
+          console.error('Error while building report:', err);
+          alert('حدث خطأ أثناء إنشاء التقرير. تفقد Console للمزيد من التفاصيل.');
+        }
+      });
+    } else {
+      console.warn('buildReport or reportOutput element missing');
+    }
+
+    if (copyBtn){
+      copyBtn.addEventListener('click', async ()=>{
+        try {
+          await navigator.clipboard.writeText(output.value);
+          const prev = copyBtn.textContent;
+          copyBtn.textContent='تم النسخ ✓';
+          setTimeout(()=> copyBtn.textContent = prev, 1500);
+        } catch(e){
+          console.error('Clipboard write failed', e);
+          alert('فشل النسخ إلى الحافظة. تحقق من أذونات الموقع.');
+        }
       });
     }
 
-    // trim trailing blank lines
-    while (out.length && out[out.length-1]==='') out.pop();
-    return out.join('\n');
+    console.log('Report script initialized successfully.');
+  } catch (e) {
+    console.error('Fatal error initializing report script:', e);
   }
-
-  // basic note create & edit (lightweight)
-  function formatNoteText(code,count,type){
-    if (!code && !count && !type) return '';
-    const parts = [];
-    if (code) parts.push(code + ':');
-    if (count) parts.push(count);
-    if (type) parts.push(type);
-    return parts.join(' ');
-  }
-
-  function createNoteItem(code,count,type){
-    const wrapper = document.createElement('div');
-    wrapper.className = 'note-item';
-    wrapper.dataset.code = code||'';
-    wrapper.dataset.count = count||'';
-    wrapper.dataset.type = type||'';
-    wrapper.dataset.mention = '';
-
-    const txt = document.createElement('span'); txt.className='note-text';
-    txt.textContent = formatNoteText(code,count,type);
-
-    const playerWrap = document.createElement('div'); playerWrap.className='player-wrap';
-    const chk = document.createElement('input'); chk.type='checkbox'; chk.className='playerChk';
-    const lbl = document.createElement('span'); lbl.textContent='لاعب';
-    const mention = document.createElement('input'); mention.className='playerMention'; mention.placeholder='@player'; mention.style.display='none';
-    chk.addEventListener('change', ()=>{ mention.style.display = chk.checked ? 'inline-block' : 'none'; if (!chk.checked) mention.value=''; });
-    mention.addEventListener('input', ()=> wrapper.dataset.mention = mention.value.trim());
-    playerWrap.appendChild(chk); playerWrap.appendChild(lbl); playerWrap.appendChild(mention);
-
-    const actions = document.createElement('div');
-    const edit = document.createElement('button'); edit.type='button'; edit.textContent='تعديل'; edit.className='edit-btn';
-    const del = document.createElement('button'); del.type='button'; del.textContent='حذف'; del.className='del-btn';
-    del.addEventListener('click', ()=> wrapper.remove());
-    edit.addEventListener('click', ()=> enterEditMode(wrapper));
-    actions.appendChild(edit); actions.appendChild(del);
-
-    wrapper.appendChild(txt); wrapper.appendChild(playerWrap); wrapper.appendChild(actions);
-    return wrapper;
-  }
-
-  function enterEditMode(wrapper){
-    const currentCode = wrapper.dataset.code||'';
-    const currentCount = wrapper.dataset.count||'';
-    const currentType = wrapper.dataset.type||'';
-    const currentMention = wrapper.dataset.mention||'';
-    const txt = wrapper.querySelector('.note-text');
-    if (!txt) return;
-    const editor = document.createElement('div'); editor.style.display='flex'; editor.style.gap='8px'; editor.style.alignItems='center';
-    const codeIn = document.createElement('input'); codeIn.className='input small'; codeIn.value=currentCode;
-    const countIn = document.createElement('input'); countIn.className='input small'; countIn.value=currentCount;
-    const typeSel = document.createElement('select'); typeSel.className='input small';
-    ['','حرة','سهم','صقر','برق','ردع'].forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v||'نوع'; if (v===currentType) o.selected=true; typeSel.appendC[...]
-    const chk = document.createElement('input'); chk.type='checkbox';
-    const mentionIn = document.createElement('input'); mentionIn.className='playerMention'; mentionIn.placeholder='@player'; mentionIn.value=currentMention||''; if (currentMention) mentionIn.style.dis[...]
-    chk.addEventListener('change', ()=> mentionIn.style.display = chk.checked ? 'inline-block' : 'none');
-    const save = document.createElement('button'); save.type='button'; save.className='add-btn'; save.textContent='حفظ';
-    const cancel = document.createElement('button'); cancel.type='button'; cancel.className='del-btn'; cancel.textContent='إلغاء';
-    save.addEventListener('click', ()=>{
-      wrapper.dataset.code = codeIn.value.trim();
-      wrapper.dataset.count = countIn.value.trim();
-      wrapper.dataset.type = typeSel.value;
-      wrapper.dataset.mention = chk.checked && mentionIn.value.trim() ? mentionIn.value.trim() : '';
-      txt.textContent = formatNoteText(wrapper.dataset.code, wrapper.dataset.count, wrapper.dataset.type);
-      editor.replaceWith(txt);
-      const notePlayerChk = wrapper.querySelector('.playerChk');
-      const noteMention = wrapper.querySelector('.playerMention');
-      if (notePlayerChk && noteMention){
-        if (wrapper.dataset.mention){ notePlayerChk.checked=true; noteMention.value = wrapper.dataset.mention; noteMention.style.display='inline-block'; }
-        else { notePlayerChk.checked=false; noteMention.value=''; noteMention.style.display='none'; }
-      }
-    });
-    cancel.addEventListener('click', ()=> editor.replaceWith(txt));
-    editor.appendChild(codeIn); editor.appendChild(countIn); editor.appendChild(typeSel); editor.appendChild(chk); editor.appendChild(mentionIn); editor.appendChild(save); editor.appendChild(cancel);
-    txt.replaceWith(editor);
-  }
-
-  // add note button
-  document.getElementById('addNoteBtn').addEventListener('click', ()=>{
-    const code = document.getElementById('noteCode').value.trim();
-    const count = document.getElementById('noteCount').value.trim();
-    const type = document.getElementById('noteType').value;
-    if (!code && !count && !type) return;
-    const item = createNoteItem(code,count,type);
-    document.getElementById('notesList').appendChild(item);
-    document.getElementById('noteCode').value=''; document.getElementById('noteCount').value='';
-  });
-
-  // build & copy buttons
-  const buildBtn = document.getElementById('buildReport');
-  const copyBtn = document.getElementById('copyReport');
-  const output = document.getElementById('reportOutput');
-  buildBtn.addEventListener('click', ()=>{
-    output.value = buildReportText();
-    copyBtn.style.display='inline-block';
-    output.focus(); output.select();
-  });
-  copyBtn.addEventListener('click', async ()=>{
-    try { await navigator.clipboard.writeText(output.value); copyBtn.textContent='تم النسخ ✓'; setTimeout(()=>copyBtn.textContent='نسخ التقرير',1500); } catch(e){ alert('فشل ال[...]
-  });
-
-  // initial small bindings: prevent player-wrap in notes is already done by not adding global player wraps for expansions
-  // observe mutations if needed (light)
+});
 </script>
 </body>
 </html>
