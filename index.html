@@ -5,33 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>تقرير العمليات - الميناء (نمذج التوسعات)</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{ --accent:#27ae60; --muted:#9b9b9b; --bg:#0b0b0b; --card:#1d1d1d; }
-    body{font-family:'Cairo',system-ui,Arial,sans-serif;background:var(--bg);color:#eee;padding:18px;margin:0;}
-    .card{background:linear-gradient(#1a1a1a,#212121);border-radius:12px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,0.6);max-width:1100px;margin:0 auto}
-    .section{margin-bottom:18px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:12px}
-    .row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-    .row label{min-width:160px;font-size:14px;color:#ddd}
-    .input{flex:1;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.04);background:#222;color:#ddd}
-    .input.small{width:120px}
-    .add-btn{background:transparent;color:var(--accent);border:1px dashed rgba(39,174,96,0.35);padding:6px 10px;border-radius:8px;cursor:pointer}
-    .btn{padding:10px 14px;border-radius:8px;cursor:pointer}
-    .primary{background:var(--accent);color:#fff;border:none;font-weight:700}
-    .secondary{background:transparent;color:var(--accent);border:1px dashed rgba(39,174,96,0.35)}
-    .del-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#ff6b6b;padding:6px 8px;border-radius:8px;cursor:pointer;font-weight:700}
-    .hide-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#9b9b9b;padding:6px 8px;border-radius:8px;cursor:pointer;font-weight:700}
-    .note-item{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 8px;border-radius:6px}
-    .player-wrap{display:flex;gap:6px;align-items:center}
-    .playerMention{width:160px;padding:6px;border-radius:6px;border:1px solid rgba(255,255,255,0.04);background:#222;color:#ddd;display:none}
-    .report-output{width:100%;min-height:260px;padding:12px;background:#111;color:#ddd;border-radius:8px;border:1px solid rgba(255,255,255,0.03);white-space:pre-wrap;direction:rtl}
-    .hidden-row > *:not(.hide-btn):not(.del-btn){display:none!important}
-    .hidden-row > .hide-btn{color:var(--accent);border-color:rgba(39,174,96,0.35);background:rgba(0,0,0,0.06)}
-    .small-note{color:var(--muted);font-size:13px;margin-bottom:8px;text-align:right}
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <section class="card">
-    <h1 style="margin:0 0 8px;color:var(--accent);">تطبيق نموذج: تقرير العمليات في التوسعات</h1>
+    <h1 class="title">تطبيق نموذج: تقرير العمليات في التوسعات</h1>
     <p class="small-note">الصفحة مُعدة لتوليد التقرير بنفس تنسيق المثال الذي أرسلته — اضغط "انشاء التقرير".</p>
 
     <form id="reportForm" onsubmit="return false;">
@@ -41,7 +19,7 @@
 
       <!-- Main groups (ردع - برق - صقر - سهم) -->
       <div class="section">
-        <h3 style="margin:0 0 8px;color:var(--accent)">العمليات الأساسية</h3>
+        <h3 class="section-title">العمليات الأساسية</h3>
 
         <div id="radaList">
           <div class="row"><label>ردع 1</label><input class="input role" value="H-000" data-role="ردع 1"></div>
@@ -69,10 +47,10 @@
 
       <!-- Expansions: each expansion has security (أمن) and hura (حرة) -->
       <div class="section" id="expansions">
-        <h3 style="margin:0 0 8px;color:var(--accent)">التوسعات</h3>
+        <h3 class="section-title">التوسعات</h3>
 
         <!-- توسعة 1 -->
-        <div class="row" style="margin:6px 0"><strong>توسعه ( 1 )</strong></div>
+        <div class="row expansion-row"><strong class="expansion-title">توسعه ( 1 )</strong></div>
         <div id="exp1SecurityList">
           <div class="row"><label>أمن 1</label><input class="input role" value="H-396" data-role="أمن 1"></div>
           <div class="row"><label>أمن 2</label><input class="input role" value="H-410" data-role="أمن 2"></div>
@@ -83,7 +61,7 @@
         </div>
 
         <!-- توسعة 2 -->
-        <div class="row" style="margin:10px 0 6px"><strong>توسعه ( 2 )</strong></div>
+        <div class="row expansion-row"><strong class="expansion-title">توسعه ( 2 )</strong></div>
         <div id="exp2SecurityList">
           <div class="row"><label>أمن 1</label><input class="input role" value="H-407" data-role="أمن 1"></div>
           <div class="row"><label>أمن 2</label><input class="input role" value="H-294" data-role="أمن 2"></div>
@@ -94,7 +72,7 @@
         </div>
 
         <!-- توسعة 3 -->
-        <div class="row" style="margin:10px 0 6px"><strong>توسعه ( 3 )</strong></div>
+        <div class="row expansion-row"><strong class="expansion-title">توسعه ( 3 )</strong></div>
         <div id="exp3SecurityList">
           <div class="row"><label>أمن 1</label><input class="input role" value="H-000" data-role="أمن 1"></div>
           <div class="row"><label>أمن 2</label><input class="input role" value="H-000" data-role="أمن 2"></div>
@@ -105,7 +83,7 @@
         </div>
 
         <!-- توسعة 4 -->
-        <div class="row" style="margin:10px 0 6px"><strong>توسعه ( 4 )</strong></div>
+        <div class="row expansion-row"><strong class="expansion-title">توسعه ( 4 )</strong></div>
         <div id="exp4SecurityList">
           <div class="row"><label>أمن 1</label><input class="input role" value="H-000" data-role="أمن 1"></div>
           <div class="row"><label>أمن 2</label><input class="input role" value="H-000" data-role="أمن 2"></div>
@@ -149,6 +127,7 @@
   </section>
 
 <script>
+  // (الـJavaScript كما في الملف الأصلي — لم يتغير)
   // helper: format and line helpers
   function extractSuffixNumber(labelText){
     if (!labelText) return '';
