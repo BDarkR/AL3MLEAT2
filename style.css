@@ -17,24 +17,39 @@ body{
 }
 
 /* خلفية كاملة مع صورة + طبقة تغميق */
-/* ضع 1.png في نفس المجلد أو غيّر المسار في url(...) إلى المسار الفعلي */
+/* ضع صورة الخلفية في المسار: ./images/bg-hero.jpg أو عدّل المسار حسب مكان الصورة */
 .bg-mark{
   position:fixed;
-  inset:0; /* يملأ الشاشة */
+  inset:0; /* top:0; right:0; bottom:0; left:0; — يملأ الشاشة */
   width:100%;
   height:100%;
   /* تركيبة: طبقة تغميق فوق الصورة */
   background:
-    linear-gradient(rgba(11,11,11,0.62), rgba(11,11,11,0.62)),
+    linear-gradient(rgba(11,11,11,0.55), rgba(11,11,11,0.55)),
     url("./1.png") center/cover no-repeat;
   pointer-events:none;
-  filter:blur(1.8px);
-  transform: scale(1.02);
+  filter:blur(1.5px);
   opacity:0.95;
   z-index:-1; /* تحت المحتوى */
-  background-blend-mode:multiply;
-  will-change: transform, filter;
 }
+
+/* إذا أردت خلفية أصغر أو علامة (كما في التصميم الأصلي) بدل التغطية الكاملة،
+   استبدل الخصائص أعلاه بالنسخة التالية (معلّقة):
+.bg-mark{
+  position:fixed;
+  right:0;
+  bottom:0;
+  width:60vmin;
+  height:60vmin;
+  background:
+    radial-gradient(circle at center, rgba(255,255,255,0.02), transparent 30%),
+    url("./images/bg-hero.jpg") center/contain no-repeat;
+  pointer-events:none;
+  filter:blur(2px);
+  opacity:0.8;
+  z-index:-1;
+}
+*/
 
 .top-nav{padding:28px 24px; display:flex; justify-content:center}
 .top-nav .pill{
@@ -56,18 +71,16 @@ body{
   padding:18px;
 }
 
-/* تكبير حجم البطاقة (المستطيل) هنا */
+/* تأكد أن البطاقة أعلى الخلفية */
 .card{
-  width:760px; /* <- تم تكبير العرض */
-  max-width:1100px;
+  width:420px;
   background:linear-gradient(#1a1a1a, #212121);
   border-radius:12px;
-  padding:36px; /* زيادة بسيطة في الحشوة لتناسب العرض الأكبر */
+  padding:28px;
   box-shadow:0 8px 30px rgba(0,0,0,0.6);
   border:1px solid rgba(255,255,255,0.03);
   position:relative;
   z-index:1;
-  margin:0 auto;
 }
 
 .title{
@@ -171,12 +184,7 @@ body{
   border:1px solid rgba(255,255,255,0.02);
 }
 
-/* استجابة: على الشاشات الصغيرة نرجع لعرض مرن */
-@media (max-width:980px){
-  .card{width:92%; padding:28px;}
-  .title{font-size:22px}
-}
-
+/* استجابة */
 @media (max-width:480px){
   .card{width:92%}
   .top-nav{padding:14px}
@@ -184,129 +192,4 @@ body{
   .input.small{max-width:100%}
 }
 
-/* ---------------------------------------------------
-   Keep hide/show control visible when JS adds
-   class="hidden-row" to a .row
-   --------------------------------------------------- */
-/* إخفاء كل عناصر الصف ما عدا أزرار التحكم */
-.hidden-row > *:not(.hide-btn):not(.del-btn) {
-  display: none !important;
-}
 
-/* تمييز زر الإظهار عندما يكون الصف مخفي */
-.hidden-row > .hide-btn {
-  color: #27ae60;
-  border-color: rgba(39,174,96,0.35);
-  background: rgba(0,0,0,0.06);
-}
-
-/* نحافظ على محاذاة الزر */
-.hidden-row { align-items: center; }
-
-/* ===== Custom select (dropdown) styling =====
-   - Targets: <select class="small"> and .select-input-like
-   - Arrow positioned on the right to match your screenshot
-   - Inline SVG caret used so no external asset is needed
-*/
-select.small,
-select.select-custom {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  /* base look */
-  display: inline-block;
-  height:38px;
-  padding: 8px 12px;
-  padding-right: 44px; /* room for the arrow on the right */
-  color: #ddd;
-  background-color: #181818;
-  border: 1px solid rgba(255,255,255,0.04);
-  border-radius: 8px;
-  font-size: 13px;
-  line-height: 1;
-  cursor: pointer;
-
-  /* place the custom arrow (SVG) on the right (matches screenshot) */
-  background-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%239b9b9b' stroke-width='2'><path d='M4 7l6 6 6-6'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 14px 14px;
-
-  /* smooth transitions on focus/hover */
-  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
-}
-
-/* make sure arrow sits on the left if the page switches to LTR */
-html:not([dir="rtl"]) select.small,
-body:not([dir="rtl"]) select.small {
-  padding-right: 12px;
-  padding-left: 44px;
-  background-position: left 12px center;
-}
-
-/* focus / hover states */
-select.small:focus,
-select.small:hover {
-  border-color: rgba(39,174,96,0.8);
-  box-shadow: 0 0 0 4px rgba(39,174,96,0.06);
-  outline: none;
-  background-color: #1d1d1d;
-}
-
-/* when the select is disabled */
-select.small:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* hide native arrow in IE/Edge */
-select.small::-ms-expand {
-  display: none;
-}
-
-/* Firefox inner reset */
-select.small::-moz-focus-inner {
-  border: 0;
-}
-
-/* Optional: make the small select visually match the .input size */
-select.small {
-  box-sizing: border-box;
-  min-width: 120px;
-}
-
-/* ---------------------------
-   Select that looks like input
-   Usage: <select id="noteType" class="small select-input-like">
-   This matches .input styles and places arrow on the right.
-   --------------------------- */
-select.small.select-input-like {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  /* match .input look */
-  display: inline-block;
-  width: 100%;
-  min-width: 120px;
-  height: 40px;                    /* same visual height as inputs */
-  padding: 8px 44px 8px 12px;      /* room for arrow on the right */
-  color: #ddd;
-  background-color: #222;          /* same as .input background */
-  border: 1px solid rgba(255,255,255,0.03);
-  border-radius: 6px;
-  font-size: 14px;
-  line-height: 1;
-  cursor: pointer;
-  box-sizing: border-box;
-
-  /* arrow (SVG) positioned on the right */
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%239b9b9b' stroke-width='2'><path d='M4 7l6 6 6-6'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 14px 14px;
-
-  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
-}
