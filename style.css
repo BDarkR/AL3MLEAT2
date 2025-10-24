@@ -1,114 +1,289 @@
+/* Dark RTL theme inspired by the provided screenshot
+   - Uses green accents, rounded dark card, subtle borders & inner shadows
+   - Designed to work with the existing HTML structure (dir="rtl" font Cairo)
+*/
+
 :root{
-  --bg-dark: #0b0b0b;
-  --panel: rgba(11,11,11,0.86);
-  --panel-2: rgba(18,18,18,0.9);
-  --muted: #9aa0a6;
-  --accent-green: #22c55e;
-  --accent-green-deep: #0fa34f;
-  --input-border: rgba(255,255,255,0.04);
-  --card-radius: 12px;
+  --bg:#0b0c0d;
+  --page-bg-image: url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1600&q=60');
+  --card-bg: rgba(10,11,12,0.75);
+  --panel-bg: rgba(255,255,255,0.02);
+  --muted: rgba(255,255,255,0.18);
+  --border: rgba(255,255,255,0.04);
+  --accent: #00d76a; /* bright green accent like screenshot */
+  --accent-2: #0bd06a;
+  --radius: 12px;
+  --glass-blur: 6px;
+  --text: #e9f6ef;
+  --hint: rgba(255,255,255,0.45);
 }
 
-*{box-sizing:border-box;font-family: 'Cairo', system-ui, sans-serif;direction:rtl}
-html,body{height:100%;margin:0;background:var(--bg-dark);color:#eee;}
+/* page background with blurred image and dark overlay */
+html,body{
+  height:100%;
+  margin:0;
+  font-family: 'Cairo', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background-color: var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+body{
+  background-image:
+    linear-gradient(rgba(4,6,6,0.85), rgba(4,6,6,0.85)),
+    var(--page-bg-image);
+  background-size:cover;
+  background-position:center;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:36px 20px;
+  direction:rtl;
+}
 
-/* خلفية خلفية باستخدام صورة + تدرجات و ::before */
-body{position:relative;overflow-x:hidden;}
-body::before{
-  content:"";
+/* topbar */
+.topbar{
   position:fixed;
-  inset:0;
-  z-index:0;
+  top:12px;
+  left:0;
+  right:0;
+  display:flex;
+  justify-content:center;
   pointer-events:none;
-  background:
-    linear-gradient(180deg, rgba(3,6,7,0.66), rgba(3,6,7,0.66)),
-    url('1.png') center/cover no-repeat; /* ضع صورة الخلفية باسم bg.jpg في نفس المجلد أو غيّر المسار */
-  filter: blur(2px) saturate(80%);
-  opacity:0.95;
+  z-index:40;
+}
+.topbar-inner{
+  width:100%;
+  max-width:1100px;
+  pointer-events:auto;
+}
+.top-nav{
+  display:flex;
+  gap:12px;
+  justify-content:flex-end;
+  align-items:center;
+  padding:6px 12px;
+}
+.pill{
+  padding:8px 18px;
+  border-radius:28px;
+  border:1px solid rgba(255,255,255,0.06);
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+  color:var(--text);
+  cursor:pointer;
+  font-weight:600;
+  box-shadow:0 2px 0 rgba(0,0,0,0.5);
+}
+.btn-light{
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+}
+.btn-ghost{
+  border:1px solid rgba(0,215,102,0.14);
+  color:var(--accent);
+  background:transparent;
 }
 
-/* شريط علوي */
-.topbar{position:fixed;inset-inline:0;top:0;z-index:3;background:transparent;padding:18px 0;display:flex;justify-content:center}
-.topbar-inner{width:100%;max-width:1200px;padding-inline:18px;display:flex;justify-content:center}
-.top-nav{display:flex;gap:12px}
-.pill{padding:8px 18px;border-radius:28px;border:1px solid rgba(255,255,255,0.04);font-weight:700;cursor:pointer}
-.btn-light{background:var(--accent-green);color:#04150c;border:none;box-shadow:0 2px 0 rgba(0,0,0,0.25)}
-.btn-ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+/* central wrapper */
+.center-wrap{
+  width:100%;
+  max-width:980px;
+  display:flex;
+  justify-content:center;
+  margin-top:18px;
+}
 
-/* حاوية البطاقة */
-.center-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 20px 40px;position:relative;z-index:1}
+/* main card */
 .card{
-  width:960px;max-width:96%;
-  background: linear-gradient(180deg, rgba(20,20,20,0.8), rgba(14,14,14,0.85));
-  border-radius:var(--card-radius);
-  padding:30px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  border:1px solid rgba(255,255,255,0.03);
-  position:relative;
+  width:100%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:18px;
+  padding:28px;
+  box-shadow:
+    0 10px 30px rgba(2,4,4,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.02);
+  border:1px solid var(--border);
+  backdrop-filter: blur(var(--glass-blur));
+  min-height:560px;
 }
 
-/* عنوان مركزي */
-.title{margin:6px 0 6px 0;font-size:28px;font-weight:700;color:var(--accent-green);text-align:center}
-.hint{margin:0 0 18px 0;color:var(--muted);text-align:center}
-
-/* شبكة داخل البطاقة: عمود أحادي للحقول وعمود جانبي للملاحظات */
-.card-grid{display:grid;grid-template-columns:360px 1fr;gap:28px;align-items:start}
-/* في الشاشات الصغيرة نتحول إلى عمود واحد */
-@media (max-width:920px){
-  .card-grid{grid-template-columns:1fr;gap:18px}
+/* title */
+.title{
+  text-align:center;
+  margin:6px 0 18px 0;
+  font-size:30px;
+  color:var(--accent);
+  font-weight:700;
+  letter-spacing:1px;
 }
 
-/* الشريط الجانبي */
-.card-side{padding:6px 8px}
-.side-title{margin:8px 0;color:#9ee6b8;font-weight:700}
-.side-section{padding:12px 8px;border-radius:8px;margin-bottom:10px;background:transparent;border:1px solid rgba(255,255,255,0.02)}
-.small-muted{color:var(--muted);font-size:13px}
-
-/* العمود الرئيسي للنموذج */
-.card-main{padding-left:6px}
-
-/* أقسام ونصوص */
-.section{margin-bottom:18px;padding:6px 0}
-.section-title{margin:6px 0 10px 0;color:#bfeccd;font-weight:700;font-size:15px}
-.row{display:flex;gap:12px;align-items:center;margin-bottom:10px}
-.row label{min-width:150px;color:#cfd6d8;font-size:14px;text-align:right}
-.input{flex:1;padding:10px 12px;border-radius:8px;background:linear-gradient(180deg,#0e0e0e,#141414);border:1px solid var(--input-border);color:#e6eef0;outline:none;box-shadow: inset 0 1px 0 rgba(255,255,255,0.02)}
-.input.small{width:140px;padding:8px 10px;font-size:13px}
-.input[readonly]{background:transparent;border:1px dashed rgba(255,255,255,.04);color:#c8d0d2}
-
-/* focus */
-.input:focus{border-color: rgba(34,197,94,0.95);box-shadow:0 0 0 6px rgba(34,197,94,0.04)}
-
-/* أزرار داخل النموذج */
-.btn{padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.03);background:transparent;color:#fff;cursor:pointer;font-weight:600}
-.btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.06);color:#ddd}
-.btn.primary{
-  background:var(--accent-green);
-  color:#02120b;
-  border:none;
-  font-weight:800;
-  padding:12px 20px;border-radius:10px;
-  display:inline-block;
+/* hint */
+.hint{
+  text-align:center;
+  color:var(--hint);
+  font-size:13px;
+  margin-bottom:18px;
 }
-.add-btn{ background:transparent;border:1px dashed rgba(34,197,94,.35);color:var(--accent-green);padding:8px;border-radius:8px;cursor:pointer }
 
-/* مظهر عناصر الملاحظة */
-.report-output{
-  width:100%;min-height:140px;background:linear-gradient(180deg,#0b0b0b,#0e0e0e);border-radius:8px;border:1px solid rgba(255,255,255,.03);
-  color:#cfeae0;padding:12px;resize:vertical;font-family:inherit;box-shadow: inset 0 1px 0 rgba(255,255,255,.02)
+/* layout grid */
+.card-grid{
+  display:block;
+}
+.card-main{
+  padding:6px 12px;
+}
+
+/* rows & inputs */
+.row{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin:10px 0;
+}
+.row label{
+  width:170px;
+  min-width:120px;
+  color:var(--hint);
+  font-weight:600;
+  text-align:right;
+  padding-right:6px;
+}
+.input{
+  flex:1;
+  height:38px;
+  padding:8px 12px;
+  background:rgba(255,255,255,0.02);
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.04);
+  color:var(--text);
+  outline:none;
+  transition:all 0.12s ease;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.6);
+}
+.input.small{ height:32px; padding:6px 8px; font-size:14px; }
+.input:focus{
+  border-color: rgba(0,215,102,0.9);
+  box-shadow:0 0 12px rgba(0,215,102,0.06), inset 0 -2px 0 rgba(0,0,0,0.6);
+}
+
+/* groups / sections */
+.section{
+  margin:18px 0;
+  padding:16px;
+  background: transparent;
+  border-radius:10px;
+}
+.section-title{
+  color:var(--accent);
+  font-size:16px;
+  margin:6px 0 10px 0;
+  padding-right:6px;
+}
+
+/* expansion card items */
+.expansion{
+  padding:12px 0;
+  border-top:1px dashed rgba(255,255,255,0.02);
+}
+.expansion-title{
+  display:block;
+  color:var(--accent-2);
+  margin-bottom:8px;
+  font-weight:700;
+}
+
+/* notes area */
+.note-add .input{ background: rgba(255,255,255,0.015); }
+.add-btn{
+  background:transparent;
+  color:var(--accent);
+  border:1px solid rgba(0,215,102,0.12);
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
 }
 .note-item{
-  display:flex;gap:8px;align-items:center;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,.02)
+  display:flex;
+  gap:12px;
+  align-items:center;
+  background: rgba(255,255,255,0.01);
+  padding:8px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.02);
 }
-.note-text{color:#d7efe0;flex:1}
-.player-wrap{display:flex;align-items:center;gap:8px}
-.player-wrap input.playerMention{background:#0b0b0b;border:1px solid var(--input-border);color:#fff;padding:6px;border-radius:6px}
-.edit-btn,.del-btn{background:transparent;border:1px solid rgba(255,255,255,.03);color:var(--muted);padding:6px;border-radius:6px}
+.note-text{
+  color:var(--hint);
+  min-width:180px;
+  text-align:right;
+  padding-right:6px;
+}
+.player-wrap{ display:flex; gap:8px; align-items:center; margin-left:auto; }
+.playerChk{ width:16px; height:16px; }
+.playerMention{
+  background:transparent;
+  border:1px dashed rgba(255,255,255,0.03);
+  color:var(--text);
+  padding:6px 8px;
+  border-radius:6px;
+}
 
-/* تحسين لعرض العناصر الصغيرة */
-.expansion-title{display:block;margin:10px 0;color:#bfeccd;font-weight:700}
-.form-actions{display:flex;gap:12px;margin-top:12px;justify-content:flex-start}
+/* action buttons */
+.form-actions{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+  justify-content:center;
+}
+.btn{
+  padding:10px 18px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.04);
+  background:rgba(0,0,0,0.2);
+  color:var(--text);
+  cursor:pointer;
+  font-weight:700;
+}
+.btn.primary{
+  background:linear-gradient(180deg, rgba(0,215,102,0.12), rgba(0,215,102,0.06));
+  border:1px solid rgba(0,215,102,0.22);
+  color:var(--accent);
+  box-shadow: 0 4px 18px rgba(0,215,102,0.06);
+}
+.btn.secondary{
+  background:transparent;
+  color:var(--hint);
+  border:1px solid rgba(255,255,255,0.03);
+}
 
-/* إخفاء عنصر .bg-mark إذا كان موجود */
-.bg-mark{display:none !important}
+/* report output */
+.report-output{
+  width:100%;
+  min-height:160px;
+  background:rgba(0,0,0,0.35);
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.03);
+  color:var(--text);
+  padding:12px;
+  resize:vertical;
+}
 
+/* small utilities */
+.edit-btn, .del-btn{
+  background:transparent;
+  color:var(--hint);
+  border:0;
+  margin-left:6px;
+  cursor:pointer;
+}
+.del-btn{ color:#ff7a7a; }
+
+/* responsive */
+@media (max-width:840px){
+  .card{ padding:18px; border-radius:12px; }
+  .row{ flex-direction:column; align-items:flex-end; gap:8px; }
+  .row label{ width:auto; text-align:right; padding-right:0; }
+  .center-wrap{ padding:0 8px; }
+}
+
+/* finishing touches */
+::-webkit-scrollbar{ height:10px; width:10px; }
+::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.04); border-radius:10px; }
