@@ -1,11 +1,11 @@
-/* Dark RTL theme inspired by the provided screenshot
+/* Dark RTL theme using local background file 1.png (place 1.png in the same folder as index.html)
    - Uses green accents, rounded dark card, subtle borders & inner shadows
    - Designed to work with the existing HTML structure (dir="rtl" font Cairo)
 */
 
 :root{
   --bg:#0b0c0d;
-  --page-bg-image: url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1600&q=60');
+  --page-bg-image: url('1.png'); /* تم تغييره ليشير إلى الملف المحلي 1.png */
   --card-bg: rgba(10,11,12,0.75);
   --panel-bg: rgba(255,255,255,0.02);
   --muted: rgba(255,255,255,0.18);
