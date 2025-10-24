@@ -21,7 +21,7 @@
       direction: rtl; /* الصفحة من اليمين لليسار */
     }
 
-    .top-nav{Padding:12px 18px;}
+    .top-nav{padding:12px 18px;}
     .top-nav nav { display:flex; gap:8px; align-items:center; justify-content:flex-start; flex-wrap:wrap; }
     .btn-pill {
       display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:6px 14px;
@@ -193,6 +193,17 @@
 </head>
 <body>
   <div class="bg-mark" aria-hidden="true"></div>
+
+  <!-- Top navigation pills (مضافة) -->
+  <div class="top-nav" aria-label="شريط التنقل العلوي">
+    <nav>
+      <!-- زر التقرير - نمط outline مطابق للصورة -->
+      <a href="#" class="btn-pill outline" id="eveningReportBtn" aria-label="تقرير العمليات الشفت المسائي">تقرير العمليات الشفت المسائي</a>
+
+      <!-- زر العودة - نمط مملوء أخضر مطابق للصورة -->
+      <a href="#" class="btn-pill filled" id="backToSiteBtn" aria-label="العودة إلى الموقع">العودة إلى الموقع</a>
+    </nav>
+  </div>
 
   <section class="card">
     <h1 style="margin:0 0 8px;color:var(--accent);"> تقرير العمليات في التوسعات</h1>
@@ -652,6 +663,26 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Clipboard write failed', e);
           alert('فشل النسخ إلى الحافظة. تحقق من أذونات الموقع.');
         }
+      });
+    }
+
+    // Optional: hook buttons in the top nav for quick actions (يمكن تعديل الروابط حسب الحاجة)
+    const backBtn = document.getElementById('backToSiteBtn');
+    if (backBtn) {
+      backBtn.addEventListener('click', (e) => {
+        // Default behavior: prevent navigation so reviewer can change URL comfortably.
+        e.preventDefault();
+        // افتح الموقع في تبويب جديد — غير الرابط في href إذا أردت توجيه محدد
+        window.open('https://example.com', '_blank');
+      });
+    }
+    const eveningBtn = document.getElementById('eveningReportBtn');
+    if (eveningBtn) {
+      eveningBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Scroll quickly إلى قسم التقرير (مثال)
+        const card = document.querySelector('.card');
+        if (card) card.scrollIntoView({behavior:'smooth'});
       });
     }
 
