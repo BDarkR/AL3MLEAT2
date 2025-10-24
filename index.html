@@ -72,7 +72,7 @@
     /* player control appended at end so ترتيب الصف لا يتغير */
     .playerControl { display:flex; gap:6px; align-items:center; direction:rtl; }
     .playerControl .playerChk { width:18px; height:18px; cursor:pointer; }
-    .playerControl .playerMention { width:140px; padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); background:#222; color:#ddd; display:none; font-size:13px; direction:rtl; text-align:right; }
+    .playerControl .playerMention { width:140px; padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); background:#222; color:#ddd; display:none; font-size:13px; direction:rtl; text[...]
 
     /* --- Note input group (المستطيل) --- */
     .note-inputs {
@@ -282,7 +282,15 @@
                 <option value="ردع">ردع</option>
               </select>
               <input id="noteTypeNumber" class="input small" placeholder=" رقم توجيه">
-              <input id="noteCount" class="input small" placeholder="ت 1">
+              <!-- Changed noteCount from free text input to select with options ت1..ت5 -->
+              <select id="noteCount" class="input small">
+                <option value="">ت</option>
+                <option value="ت1">ت1</option>
+                <option value="ت2">ت2</option>
+                <option value="ت3">ت3</option>
+                <option value="ت4">ت4</option>
+                <option value="ت5">ت5</option>
+              </select>
               <button type="button" id="addNoteBtn" class="add-btn">إضافة</button>
             </div>
 
@@ -531,7 +539,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!txt) return;
       const editor = document.createElement('div'); editor.style.display='flex'; editor.style.gap='8px'; editor.style.alignItems='center';
       const codeIn = document.createElement('input'); codeIn.className='input small'; codeIn.value=currentCode;
-      const countIn = document.createElement('input'); countIn.className='input small'; countIn.value=currentCount;
+
+      // replace count input with select to match main input
+      const countSel = document.createElement('select');
+      countSel.className = 'input small';
+      const countOptions = [
+        {v:'', t:'ت'},
+        {v:'ت1', t:'ت1'},
+        {v:'ت2', t:'ت2'},
+        {v:'ت3', t:'ت3'},
+        {v:'ت4', t:'ت4'},
+        {v:'ت5', t:'ت5'}
+      ];
+      countOptions.forEach(o=>{
+        const opt = document.createElement('option');
+        opt.value = o.v;
+        opt.textContent = o.t;
+        if (o.v === currentCount) opt.selected = true;
+        countSel.appendChild(opt);
+      });
 
       // select for type
       const typeSel = document.createElement('select'); typeSel.className='input small';
@@ -549,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       save.addEventListener('click', ()=>{
         wrapper.dataset.code = codeIn.value.trim();
-        wrapper.dataset.count = countIn.value.trim();
+        wrapper.dataset.count = countSel.value.trim();
         wrapper.dataset.type = typeSel.value;
         wrapper.dataset.typeNum = typeNumIn.value.trim();
         txt.textContent = formatNoteText(wrapper.dataset.type, wrapper.dataset.typeNum, wrapper.dataset.code, wrapper.dataset.count);
@@ -558,7 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       cancel.addEventListener('click', ()=> editor.replaceWith(txt));
 
-      editor.appendChild(codeIn); editor.appendChild(typeSel); editor.appendChild(typeNumIn); editor.appendChild(countIn);
+      editor.appendChild(codeIn); editor.appendChild(typeSel); editor.appendChild(typeNumIn); editor.appendChild(countSel);
       editor.appendChild(save); editor.appendChild(cancel);
       txt.replaceWith(editor);
     }
@@ -568,7 +594,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addNoteBtn) {
       addNoteBtn.addEventListener('click', ()=>{
         const code = (document.getElementById('noteCode')||{value:''}).value.trim();
-        const count = (document.getElementById('noteCount')||{value:''}).value.trim();
+        const count = (document.getElementById('noteCount')||{value:''}).value;
         const type = (document.getElementById('noteType')||{value:''}).value;
         const typeNum = (document.getElementById('noteTypeNumber')||{value:''}).value.trim();
         if (!code && !count && !type && !typeNum) return;
