@@ -11,7 +11,7 @@
   <!-- خلفية كاملة -->
   <div class="bg-mark" aria-hidden="true"></div>
 
-  <!-- شريط علوي (الـ pills كما في الصورة) -->
+  <!-- شريط علوي -->
   <header class="top-nav">
     <div class="pill secondary">العودة إلى الموقع</div>
     <div class="pill">تقرير العمليات الشفت المسائي</div>
@@ -24,19 +24,15 @@
       <p class="small-note">املأ الحقول ثم اضغط "انشاء التقرير"</p>
 
       <form id="reportForm" onsubmit="return false;">
-        <!-- grid form: عمود التسميات على اليمين، الحقول على اليسار -->
         <div class="form-grid">
 
-          <!-- مجموعة زمن الاستلام -->
+          <!-- أمثلة صفوف -->
           <div class="row-grid">
             <div class="label-col">وقت استلام الشفت</div>
             <div class="input-col">
               <input id="shiftTimeDisplay" class="input" value="6 مساءً" readonly>
             </div>
           </div>
-
-          <!-- العمليات الأساسية: كل سطر يظهر كصفين -->
-          <div class="section-title">القيادة العامة</div>
 
           <div class="row-grid">
             <div class="label-col">قائد امن المنشأت</div>
@@ -48,73 +44,49 @@
             <div class="input-col"><input class="input role" value="H-000" data-role="نائب قائد امن المنشأت"></div>
           </div>
 
-          <div class="section-title">القيادة (يمكن إضافة آخر)</div>
+          <!-- ---- قسم إضافة بند (كما في الصورة رقم 5) ---- -->
+          <div class="section-title">إضافة بند للملاحظة</div>
 
-          <div class="row-grid">
-            <div class="label-col">قيادة 1</div>
-            <div class="input-col"><input class="input role" value="H-000" data-role="قيادة 1"></div>
-          </div>
-
-          <div class="row-grid">
-            <div class="label-col">قيادة 2</div>
-            <div class="input-col"><input class="input role" value="H-000" data-role="قيادة 2"></div>
-          </div>
-
-          <div class="row-grid add-row">
+          <div class="row-grid note-add-row">
             <div class="label-col"></div>
+            <div class="input-col note-add-cols">
+              <input id="noteCode" class="input small note-input code" placeholder="مثال: H-018">
+              <input id="noteCount" class="input small note-input count" placeholder="ت 1">
+              <select id="noteType" class="input small note-input type">
+                <option value="">نوع</option>
+                <option value="حرة">حرة</option>
+                <option value="سهم">سهم</option>
+                <option value="صقر">صقر</option>
+                <option value="برق">برق</option>
+                <option value="ردع">ردع</option>
+              </select>
+
+              <button id="addNoteBtn" type="button" class="add-btn">＋ إضافة</button>
+            </div>
+          </div>
+
+          <!-- قائمة الملاحظات المضافة -->
+          <div class="row-grid">
+            <div class="label-col">ملاحظات مضافة</div>
             <div class="input-col">
-              <button type="button" class="btn-dashed">＋ إضافة قيادة</button>
+              <div id="notesList" class="notes-list"></div>
             </div>
           </div>
 
-          <div class="section-title">الوحدات (قابلة للإضافة)</div>
-
-          <!-- مثال على أربع وحدات مع خانة "لاعب معتمد" كـ checkbox -->
-          <div class="row-grid">
-            <div class="label-col">حماية 1</div>
-            <div class="input-col inputs-with-checkbox">
-              <label class="checkbox-inline"><input type="checkbox"> لاعب معتمد</label>
-              <input class="input role" value="H-000" data-role="حماية 1">
-            </div>
-          </div>
-
-          <div class="row-grid">
-            <div class="label-col">حماية 2</div>
-            <div class="input-col inputs-with-checkbox">
-              <label class="checkbox-inline"><input type="checkbox"> لاعب معتمد</label>
-              <input class="input role" value="H-000" data-role="حماية 2">
-            </div>
-          </div>
-
-          <div class="row-grid">
-            <div class="label-col">حماية 3</div>
-            <div class="input-col inputs-with-checkbox">
-              <label class="checkbox-inline"><input type="checkbox"> لاعب معتمد</label>
-              <input class="input role" value="H-000" data-role="حماية 3">
-            </div>
-          </div>
-
-          <div class="row-grid">
-            <div class="label-col">حماية 4</div>
-            <div class="input-col inputs-with-checkbox">
-              <label class="checkbox-inline"><input type="checkbox"> لاعب معتمد</label>
-              <input class="input role" value="H-000" data-role="حماية 4">
-            </div>
-          </div>
-
-          <!-- زر إنشاء التقرير بعرض كامل -->
+          <!-- زر إنشاء التقرير -->
           <div class="row-grid full-row">
             <div class="label-col"></div>
             <div class="input-col">
-              <button id="buildReport" type="button" class="btn primary large">انشاء التقرير</button>
+              <button id="buildReport" type="button" class="btn primary large full-width-btn">انشاء التقرير</button>
             </div>
           </div>
 
-          <!-- مربع النتيجة -->
+          <!-- شرح صغير وtextarea النتيجة -->
           <div class="row-grid full-row">
             <div class="label-col"></div>
-            <div class="input-col">
-              <textarea id="reportOutput" class="report-output" placeholder="سيظهر التقرير هنا بعد الضغط"></textarea>
+            <div class="input-col column">
+              <div class="report-caption">سيظهر التقرير هنا بعد الضغط</div>
+              <textarea id="reportOutput" class="report-output" placeholder=""></textarea>
               <div class="copy-wrap">
                 <button id="copyReport" class="btn secondary small" style="display:none">نسخ التقرير</button>
               </div>
@@ -127,7 +99,7 @@
   </main>
 
 <script>
-  // (الكود الأصلي كما هو، مع بنية الأزرار الجديدة)
+  // ------ Helpers (نُقلّت وتكيّفت من النسخة الأصلية) ------
   function extractSuffixNumber(labelText){
     if (!labelText) return '';
     const m = labelText.trim().match(/(\d+)\s*$/);
@@ -138,6 +110,7 @@
     return roleName + ' : ' + value + (n ? ' | ت ' + n : '');
   }
 
+  // قراءة صف (تدعم خانة اللاعب في الملاحظات إن وُجدت)
   function readRowValue(row){
     if (!row) return null;
     const roleName = (row.querySelector('.label-col') ? row.querySelector('.label-col').textContent : '') || '';
@@ -167,8 +140,37 @@
     const rows = document.querySelectorAll('.form-grid .row-grid');
     rows.forEach(r=>{
       if (r.classList.contains('full-row')) return;
+      // تجاهل صفوف الإدخال الخاصة بالملاحظة (عرض القيم من الملاحظات المضافة بدلًا من صف الإدخال)
+      if (r.classList.contains('note-add-row')) return;
+      if (r.querySelector('.notes-list')) return; // تجنب الحاوية
       const d = readRowValue(r);
       if (d && d.roleName && !/^\s*$/.test(d.roleName)) out.push(formatLine(d.roleName, d.val));
+    });
+
+    // إضافة ملاحظات التقرير من notesList
+    const noteItems = Array.from(document.querySelectorAll('#notesList .note-item'));
+    out.push('');
+    out.push('`ملاحظات التقرير :`');
+    out.push('');
+    noteItems.forEach(it=>{
+      const playerChk = it.querySelector('.playerChk');
+      const mention = it.querySelector('.playerMention');
+      const code = it.dataset.code||'';
+      const count = it.dataset.count||'';
+      const type = it.dataset.type||'';
+      let line = '';
+      if (playerChk && playerChk.checked){
+        const raw = (mention && mention.value)?mention.value.trim():'';
+        const m = raw ? (raw.startsWith('@')?raw:('@'+raw)) : '@';
+        line = m + (type ? (' ' + type) : '') + (count ? (' ' + count) : '');
+      } else {
+        const parts = [];
+        if (code) parts.push(code + ':');
+        if (count) parts.push(count);
+        if (type) parts.push(type);
+        line = parts.join(' ');
+      }
+      if (line) out.push(line);
     });
 
     // trim
@@ -176,6 +178,98 @@
     return out.join('\n');
   }
 
+  // ------ مكوّن الملاحظات: إنشاء عنصر جديد ------
+  function formatNoteText(code,count,type){
+    if (!code && !count && !type) return '';
+    const parts = [];
+    if (code) parts.push(code + ':');
+    if (count) parts.push(count);
+    if (type) parts.push(type);
+    return parts.join(' ');
+  }
+
+  function createNoteItem(code,count,type){
+    const wrapper = document.createElement('div');
+    wrapper.className = 'note-item';
+    wrapper.dataset.code = code||'';
+    wrapper.dataset.count = count||'';
+    wrapper.dataset.type = type||'';
+    wrapper.dataset.mention = '';
+
+    const txt = document.createElement('span'); txt.className='note-text';
+    txt.textContent = formatNoteText(code,count,type) || 'بند جديد';
+
+    // player controls
+    const playerWrap = document.createElement('div'); playerWrap.className='player-wrap';
+    const chk = document.createElement('input'); chk.type='checkbox'; chk.className='playerChk';
+    const lbl = document.createElement('span'); lbl.textContent='لاعب معتمد';
+    const mention = document.createElement('input'); mention.className='playerMention'; mention.placeholder='@player'; mention.style.display='none';
+    chk.addEventListener('change', ()=>{ mention.style.display = chk.checked ? 'inline-block' : 'none'; if (!chk.checked) mention.value=''; wrapper.dataset.mention = mention.value.trim(); });
+    mention.addEventListener('input', ()=> wrapper.dataset.mention = mention.value.trim());
+    playerWrap.appendChild(chk); playerWrap.appendChild(lbl); playerWrap.appendChild(mention);
+
+    // actions
+    const actions = document.createElement('div'); actions.className='note-actions';
+    const edit = document.createElement('button'); edit.type='button'; edit.textContent='تعديل'; edit.className='edit-btn';
+    const del = document.createElement('button'); del.type='button'; del.textContent='حذف'; del.className='del-btn';
+    del.addEventListener('click', ()=> wrapper.remove());
+    edit.addEventListener('click', ()=> enterEditMode(wrapper));
+    actions.appendChild(edit); actions.appendChild(del);
+
+    wrapper.appendChild(txt);
+    wrapper.appendChild(playerWrap);
+    wrapper.appendChild(actions);
+    return wrapper;
+  }
+
+  function enterEditMode(wrapper){
+    const currentCode = wrapper.dataset.code||'';
+    const currentCount = wrapper.dataset.count||'';
+    const currentType = wrapper.dataset.type||'';
+    const currentMention = wrapper.dataset.mention||'';
+    const txt = wrapper.querySelector('.note-text');
+    if (!txt) return;
+    const editor = document.createElement('div'); editor.style.display='flex'; editor.style.gap='8px'; editor.style.alignItems='center';
+    const codeIn = document.createElement('input'); codeIn.className='input small'; codeIn.value=currentCode;
+    const countIn = document.createElement('input'); countIn.className='input small'; countIn.value=currentCount;
+    const typeSel = document.createElement('select'); typeSel.className='input small';
+    ['','حرة','سهم','صقر','برق','ردع'].forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v||'نوع'; if (v===currentType) o.selected=true; typeSel.appendChild(o);});
+    const chk = document.createElement('input'); chk.type='checkbox'; chk.className='editor-playerChk';
+    const mentionIn = document.createElement('input'); mentionIn.className='playerMention'; mentionIn.placeholder='@player'; mentionIn.value=currentMention||''; if (currentMention) mentionIn.style.display='inline-block', chk.checked=true;
+    chk.addEventListener('change', ()=> mentionIn.style.display = chk.checked ? 'inline-block' : 'none');
+    const save = document.createElement('button'); save.type='button'; save.className='add-btn'; save.textContent='حفظ';
+    const cancel = document.createElement('button'); cancel.type='button'; cancel.className='del-btn'; cancel.textContent='إلغاء';
+    save.addEventListener('click', ()=>{
+      wrapper.dataset.code = codeIn.value.trim();
+      wrapper.dataset.count = countIn.value.trim();
+      wrapper.dataset.type = typeSel.value;
+      wrapper.dataset.mention = chk.checked && mentionIn.value.trim() ? mentionIn.value.trim() : '';
+      txt.textContent = formatNoteText(wrapper.dataset.code, wrapper.dataset.count, wrapper.dataset.type) || 'بند جديد';
+      editor.replaceWith(txt);
+      const notePlayerChk = wrapper.querySelector('.playerChk');
+      const noteMention = wrapper.querySelector('.playerMention');
+      if (notePlayerChk && noteMention){
+        if (wrapper.dataset.mention){ notePlayerChk.checked=true; noteMention.value = wrapper.dataset.mention; noteMention.style.display='inline-block'; }
+        else { notePlayerChk.checked=false; noteMention.value=''; noteMention.style.display='none'; }
+      }
+    });
+    cancel.addEventListener('click', ()=> editor.replaceWith(txt));
+    editor.appendChild(codeIn); editor.appendChild(countIn); editor.appendChild(typeSel); editor.appendChild(chk); editor.appendChild(mentionIn); editor.appendChild(save); editor.appendChild(cancel);
+    txt.replaceWith(editor);
+  }
+
+  // add note button binding
+  document.getElementById('addNoteBtn').addEventListener('click', ()=>{
+    const code = document.getElementById('noteCode').value.trim();
+    const count = document.getElementById('noteCount').value.trim();
+    const type = document.getElementById('noteType').value;
+    if (!code && !count && !type) return;
+    const item = createNoteItem(code, count, type);
+    document.getElementById('notesList').appendChild(item);
+    document.getElementById('noteCode').value=''; document.getElementById('noteCount').value=''; document.getElementById('noteType').value='';
+  });
+
+  // build & copy buttons
   const buildBtn = document.getElementById('buildReport');
   const copyBtn = document.getElementById('copyReport');
   const output = document.getElementById('reportOutput');
