@@ -21,7 +21,7 @@
       direction: rtl; /* الصفحة من اليمين لليسار */
     }
 
-    .top-nav{padding:12px 18px;}
+    .top-nav{Padding:12px 18px;}
     .top-nav nav { display:flex; gap:8px; align-items:center; justify-content:flex-start; flex-wrap:wrap; }
     .btn-pill {
       display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:6px 14px;
@@ -55,7 +55,7 @@
 
     .add-btn { background:transparent; color:var(--accent); border:1px dashed rgba(39,174,96,0.35); padding:6px 10px; border-radius:8px; cursor:pointer; }
     .controls { display:flex; gap:8px; margin-top:10px; }
-    .report-output { width:100%; min-height:220px; resize:vertical; padding:12px; background:#222; color:#ddd; border-radius:8px; border:1px solid rgba(255,255,255,0.03); white-space:pre-wrap; direction:rtl; }
+    .report-output { width:100%; min-height:220px; resize:vertical; padding:12px; background:#222; color:#ddd; border-radius:8px; border:1px solid rgba(255,255,255,0.03); white-space:pre-wrap; }
 
     .del-btn { background:transparent; border:1px solid rgba(255,255,255,0.06); color:#ff6b6b; padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
     .edit-btn { background:transparent; border:1px dashed rgba(255,255,255,0.06); color:#ffd36b; padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
@@ -251,6 +251,17 @@
           <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
           <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
         </div>
+
+        <!-- تمت إضافة توسعة 5 -->
+        <div class="row" style="margin:10px 0 6px"><strong>توسعه ( 5 )</strong></div>
+        <div id="exp5SecurityList">
+          <div class="row"><label>أمن 1</label><input class="input role" value="H-000" data-role="أمن 1"></div>
+          <div class="row"><label>أمن 2</label><input class="input role" value="H-000" data-role="أمن 2"></div>
+        </div>
+        <div id="exp5HuraList" style="margin-top:6px">
+          <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
+          <div class="row"><label>حرة 2</label><input class="input role" value="H-000" data-role="حرة 2"></div>
+        </div>
       </div>
 
       <div class="section" id="notesSection">
@@ -379,7 +390,8 @@ document.addEventListener('DOMContentLoaded', () => {
         out.push('');
       }
 
-      [1,2,3,4].forEach(appendExpansion);
+      // محدثة لتضمين التوسعة 5
+      [1,2,3,4,5].forEach(appendExpansion);
 
       const noteItems = Array.from(document.querySelectorAll('#notesList .note-item'));
       out.push('`ملاحظات التقرير :`');
