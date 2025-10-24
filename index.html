@@ -92,7 +92,7 @@
   <div class="bg-mark" aria-hidden="true"></div>
 
   <section class="card">
-    <h1 style="margin:0 0 8px;color:var(--accent);">تطبيق نموذج: تقرير العمليات في التوسعات</h1>
+    <h1 style="margin:0 0 8px;color:var(--accent);"> تقرير العمليات في التوسعات</h1>
     <form id="reportForm" onsubmit="return false;">
       <div class="section">
         <div class="row"><label>وقت استلام الشفت</label><input id="shiftTimeDisplay" class="input" value="6 صباحا" readonly></div>
@@ -112,7 +112,7 @@
         </div>
 
         <div id="saqrList" style="margin-top:8px">
-          <div class="row"><label>صقر 1</label><input class="input role" value="H-145" data-role="صقر 1"></div>
+          <div class="row"><label>صقر 1</label><input class="input role" value="H-000" data-role="صقر 1"></div>
           <div class="row"><label>صقر 2</label><input class="input role" value="H-000" data-role="صقر 2"></div>
           <div class="row"><label>صقر 3</label><input class="input role" value="H-000" data-role="صقر 3"></div>
           <div class="row"><label>صقر 4</label><input class="input role" value="H-000" data-role="صقر 4"></div>
@@ -130,8 +130,8 @@
 
         <div class="row" style="margin:6px 0"><strong>توسعه ( 1 )</strong></div>
         <div id="exp1SecurityList">
-          <div class="row"><label>أمن 1</label><input class="input role" value="H-396" data-role="أمن 1"></div>
-          <div class="row"><label>أمن 2</label><input class="input role" value="H-410" data-role="أمن 2"></div>
+          <div class="row"><label>أمن 1</label><input class="input role" value="H-000" data-role="أمن 1"></div>
+          <div class="row"><label>أمن 2</label><input class="input role" value="H-000" data-role="أمن 2"></div>
         </div>
         <div id="exp1HuraList" style="margin-top:6px">
           <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
@@ -140,8 +140,8 @@
 
         <div class="row" style="margin:10px 0 6px"><strong>توسعه ( 2 )</strong></div>
         <div id="exp2SecurityList">
-          <div class="row"><label>أمن 1</label><input class="input role" value="H-407" data-role="أمن 1"></div>
-          <div class="row"><label>أمن 2</label><input class="input role" value="H-294" data-role="أمن 2"></div>
+          <div class="row"><label>أمن 1</label><input class="input role" value="H-000" data-role="أمن 1"></div>
+          <div class="row"><label>أمن 2</label><input class="input role" value="H-000" data-role="أمن 2"></div>
         </div>
         <div id="exp2HuraList" style="margin-top:6px">
           <div class="row"><label>حرة 1</label><input class="input role" value="H-000" data-role="حرة 1"></div>
@@ -177,7 +177,7 @@
             <input id="noteCode" class="input small" placeholder="مثال: H-018">
             <input id="noteCount" class="input small" placeholder="ت 1">
             <select id="noteType" class="input small">
-              <option value="">نوع</option><option value="حرة">حرة</option><option value="سهم">سهم</option><option value="صقر">صقر</option>
+              <option value="">توجيه</option><option value="حرة">حرة</option><option value="سهم">سهم</option><option value="صقر">صقر</option>
             </select>
             <button type="button" id="addNoteBtn" class="add-btn">＋ إضافة</button>
           </div>
@@ -238,9 +238,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const shiftLabel = 'الميناء';
       const timeLabel = (document.getElementById('shiftTimeDisplay') && document.getElementById('shiftTimeDisplay').value) || '6 صباحا';
 
-      out.push('***تقرير العمليات في التوسعات ***');
+      out.push('تقرير العمليات في التوسعات ');
       out.push('');
-      out.push('**تم استلام عمليات ' + shiftLabel + ' في تمام الساعه ' + timeLabel + ' **');
+      out.push('تم استلام عمليات ' + shiftLabel + ' في تمام الساعه ' + timeLabel + ' ');
       out.push('');
 
       ['radaList','barqList','saqrList','sahmList'].forEach(id=>{
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       function appendExpansion(n){
-        out.push('**توسعه ( ' + n + ' ) **');
+        out.push('توسعه ( ' + n + ' ) ');
         const sec = document.getElementById('exp'+n+'SecurityList');
         if (sec){
           const rows = sec.querySelectorAll('.row');
@@ -320,14 +320,14 @@ document.addEventListener('DOMContentLoaded', () => {
       chk.title = 'لاعب معتمد (اضغط لإظهار حقل الاسم)';
 
       const lbl = document.createElement('span');
-      lbl.textContent = 'لاعب';
+      lbl.textContent = 'لاعب معتمد';
       lbl.style.fontSize = '13px';
       lbl.style.color = '#ddd';
 
       const mention = document.createElement('input');
       mention.type = 'text';
       mention.className = 'playerMention';
-      mention.placeholder = '@اسم أو كود';
+      mention.placeholder = '@اسم الاعب ';
       mention.setAttribute('dir', 'rtl');
       mention.style.display = 'none';
 
