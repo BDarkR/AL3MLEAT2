@@ -13,7 +13,7 @@
     body{
       margin:0;
       font-family:'Cairo', system-ui, Arial, sans-serif;
-      background:var(--bg);
+      background:transparent; /* مُعدّل: اجعل الخلفية شفافة ليتضح عنصر .bg-mark */
       color:#eee;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
@@ -54,7 +54,7 @@
 
     .add-btn { background:transparent; color:var(--accent); border:1px dashed rgba(39,174,96,0.35); padding:6px 10px; border-radius:8px; cursor:pointer; }
     .controls { display:flex; gap:8px; margin-top:10px; }
-    .report-output { width:100%; min-height:220px; resize:vertical; padding:12px; background:#222; color:#ddd; border-radius:8px; border:1px solid rgba(255,255,255,0.03); white-space:pre-wrap; direction:rtl; }
+    .report-output { width:100%; min-height:220px; resize:vertical; padding:12px; background:#222; color:#ddd; border-radius:8px; border:1px solid rgba(255,255,255,0.03); white-space:pre-wrap; directi[...]
 
     .del-btn { background:transparent; border:1px solid rgba(255,255,255,0.06); color:#ff6b6b; padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
     .edit-btn { background:transparent; border:1px dashed rgba(255,255,255,0.06); color:#ffd36b; padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
@@ -90,6 +90,9 @@
   </style>
 </head>
 <body>
+  <!-- عنصر الخلفية: ضع 1.png بنفس المجلد أو غيّر المسار في style.css -->
+  <div class="bg-mark" aria-hidden="true"></div>
+
   <section class="card">
     <h1 style="margin:0 0 8px;color:var(--accent);">تطبيق نموذج: تقرير العمليات في التوسعات</h1>
     <form id="reportForm" onsubmit="return false;">
@@ -375,9 +378,9 @@
     const codeIn = document.createElement('input'); codeIn.className='input small'; codeIn.value=currentCode;
     const countIn = document.createElement('input'); countIn.className='input small'; countIn.value=currentCount;
     const typeSel = document.createElement('select'); typeSel.className='input small';
-    ['','حرة','سهم','صقر','برق','ردع'].forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v||'نوع'; if (v===currentType) o.selected=true; typeSel.appendChild(o);});
+    ['','حرة','سهم','صقر','برق','ردع'].forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v||'نوع'; if (v===currentType) o.selected=true; typeSel.appendC[...]
     const chk = document.createElement('input'); chk.type='checkbox';
-    const mentionIn = document.createElement('input'); mentionIn.className='playerMention'; mentionIn.placeholder='@player'; mentionIn.value=currentMention||''; if (currentMention) mentionIn.style.display='inline-block', chk.checked=true;
+    const mentionIn = document.createElement('input'); mentionIn.className='playerMention'; mentionIn.placeholder='@player'; mentionIn.value=currentMention||''; if (currentMention) mentionIn.style.dis[...]
     chk.addEventListener('change', ()=> mentionIn.style.display = chk.checked ? 'inline-block' : 'none');
     const save = document.createElement('button'); save.type='button'; save.className='add-btn'; save.textContent='حفظ';
     const cancel = document.createElement('button'); cancel.type='button'; cancel.className='del-btn'; cancel.textContent='إلغاء';
@@ -421,7 +424,7 @@
     output.focus(); output.select();
   });
   copyBtn.addEventListener('click', async ()=>{
-    try { await navigator.clipboard.writeText(output.value); copyBtn.textContent='تم النسخ ✓'; setTimeout(()=>copyBtn.textContent='نسخ التقرير',1500); } catch(e){ alert('فشل النسخ'); }
+    try { await navigator.clipboard.writeText(output.value); copyBtn.textContent='تم النسخ ✓'; setTimeout(()=>copyBtn.textContent='نسخ التقرير',1500); } catch(e){ alert('فشل ال[...]
   });
 
   // initial small bindings: prevent player-wrap in notes is already done by not adding global player wraps for expansions
