@@ -55,7 +55,7 @@
 
     .add-btn { background:transparent; color:var(--accent); border:1px dashed rgba(39,174,96,0.35); padding:6px 10px; border-radius:8px; cursor:pointer; }
     .controls { display:flex; gap:8px; margin-top:10px; }
-    .report-output { width:100%; min-height:220px; resize:vertical; padding:12px; background:#222; color:#ddd; border-radius:8px; border:1px solid rgba(255,255,255,0.03); white-space:pre-wrap; direction:rtl; font-family: 'Cairo', sans-serif; }
+    .report-output { width:100%; min-height:220px; resize:vertical; padding:12px; background:#222; color:#ddd; border-radius:8px; border:1px solid rgba(255,255,255,0.03); white-space:pre-wrap; direction:rtl; }
 
     .del-btn { background:transparent; border:1px solid rgba(255,255,255,0.06); color:#ff6b6b; padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
     .edit-btn { background:transparent; border:1px dashed rgba(255,255,255,0.06); color:#ffd36b; padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
@@ -65,26 +65,51 @@
     .row label.duplicate-label { color:#ff6b6b !important; }
     #dupWarning { color:#ff6b6b; display:none; margin-top:8px; font-size:13px; }
 
-    .note-item{ display:flex; gap:8px; align-items:center; justify-content:space-between; padding:6px 8px; border-radius:6px; }
+    .note-item{ display:flex; gap:8px; align-items:center; justify-content:space-between; padding:6px 8px; border-radius:6px; background:#141414; border:1px solid rgba(255,255,255,0.02); }
     .note-text{ color:#ddd; flex:1; padding-right:8px; }
     .note-actions{ display:flex; gap:6px; align-items:center; margin-left:8px; }
 
     /* player control appended at end so ترتيب الصف لا يتغير */
     .playerControl { display:flex; gap:6px; align-items:center; direction:rtl; }
     .playerControl .playerChk { width:18px; height:18px; cursor:pointer; }
-    .playerControl .playerMention { width:140px; padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); background:#222; color:#ddd; display:none; font-size:13px; direction:rtl; text-align:right; }
+    .playerControl .playerMention { width:140px; padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); background:#222; color:#ddd; display:none; font-size:13px; direction:rtl; text-align:right }
+
+    /* --- Note input group (المستطيل) --- */
+    .note-inputs {
+      display:flex;
+      gap:8px;
+      align-items:center;
+      background:linear-gradient(#121212,#181818);
+      border:1px solid rgba(255,255,255,0.04);
+      padding:8px;
+      border-radius:10px;
+      width:100%;
+    }
+    .input.small { padding:6px 8px; font-size:13px; height:34px; box-sizing:border-box; }
+    #noteCode.input.small { width:150px; }
+    #noteType.input.small { width:110px; }
+    #noteTypeNumber.input.small { width:70px; }
+    #noteCount.input.small { width:70px; }
+    #addNoteBtn { height:34px; }
 
     @media (max-width:980px){
       .card{width:92%; padding:16px;}
       .title{font-size:22px}
       .row label{min-width:120px}
       .playerControl .playerMention{width:100px;}
+      #noteCode.input.small { width:120px; }
+      #noteType.input.small { width:90px; }
+      #noteTypeNumber.input.small { width:60px; }
+      #noteCount.input.small { width:60px; }
     }
     @media (max-width:480px){
       .card{width:92%}
       .title{font-size:20px}
       .row label{min-width:100px}
       .playerControl .playerMention{width:80px;}
+      .note-inputs { flex-wrap:wrap; gap:6px; }
+      #noteCode.input.small { width:100%; flex:1 1 auto; }
+      #noteType.input.small, #noteTypeNumber.input.small, #noteCount.input.small { width:80px; flex:0 0 auto; }
     }
   </style>
 </head>
@@ -171,15 +196,29 @@
 
       <div class="section" id="notesSection">
         <div class="row"><label>ملاحظة رئيسية</label><input id="noteField" class="input" value=""></div>
+
         <div class="row" style="align-items:flex-start">
           <label>إضافة بند</label>
-          <div style="flex:1;display:flex;gap:8px;align-items:center">
-            <input id="noteCode" class="input small" placeholder="مثال: H-018">
-            <input id="noteCount" class="input small" placeholder="ت 1">
-            <select id="noteType" class="input small">
-              <option value="">توجيه</option><option value="حرة">حرة</option><option value="سهم">سهم</option><option value="صقر">صقر</option>
-            </select>
-            <button type="button" id="addNoteBtn" class="add-btn">＋ إضافة</button>
+          <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+            <!-- المجموعه داخل المستطيل -->
+            <div class="note-inputs" aria-label="حقل إضافة ملاحظة">
+              <input id="noteCode" class="input small" placeholder="مثال: H-018">
+              <select id="noteType" class="input small">
+                <option value="">نوع</option>
+                <option value="حرة">حرة</option>
+                <option value="سهم">سهم</option>
+                <option value="صقر">صقر</option>
+                <option value="برق">برق</option>
+                <option value="ردع">ردع</option>
+              </select>
+              <input id="noteTypeNumber" class="input small" placeholder="رقم التوسعه (مثال: 7)">
+              <input id="noteCount" class="input small" placeholder="ت 1">
+              <button type="button" id="addNoteBtn" class="add-btn">＋ إضافة</button>
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center">
+              <small style="color:var(--muted)">الحقل داخل المستطيل لسهولة الإدخال وحجم موحد. يمكنك تعديل الرقم والنوع ثم الضغط إضافة.</small>
+            </div>
           </div>
         </div>
 
@@ -292,11 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
           const code = it.dataset.code||'';
           const count = it.dataset.count||'';
           const type = it.dataset.type||'';
-          const parts = [];
-          if (code) parts.push(code + ':');
-          if (count) parts.push(count);
-          if (type) parts.push(type);
-          const line = parts.join(' ');
+          const typeNum = it.dataset.typeNum||'';
+          const line = formatNoteText(type, typeNum, code, count);
           if (line) out.push(line);
         });
       }
@@ -361,25 +397,46 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Notes helpers (unchanged)
-    function formatNoteText(code,count,type){
-      if (!code && !count && !type) return '';
-      const parts = [];
-      if (code) parts.push(code + ':');
-      if (count) parts.push(count);
-      if (type) parts.push(type);
-      return parts.join(' ');
+    // Notes helpers (with select for type and separate type number)
+    function normalizeType(value){
+      return value ? value.trim() : '';
     }
 
-    function createNoteItem(code,count,type){
+    function normalizeTypeNumber(value){
+      if (!value) return '';
+      return (value+'').trim();
+    }
+
+    function formatNoteText(type, typeNum, code, count){
+      const t = normalizeType(type);
+      const tn = normalizeTypeNumber(typeNum);
+      const c = code ? code.trim() : '';
+      const cnt = count ? count.trim() : '';
+
+      const typePart = t ? (t + (tn ? tn : '')) : '';
+      if (typePart && c) {
+        return typePart + ': ' + c + (cnt ? ' | ' + cnt : '');
+      }
+      if (!typePart && c) {
+        return c + (cnt ? ' | ' + cnt : '');
+      }
+      if (typePart && !c) {
+        return typePart + (cnt ? ' | ' + cnt : '');
+      }
+      if (cnt) return cnt;
+      return '';
+    }
+
+    function createNoteItem(code,count,type,typeNum){
       const wrapper = document.createElement('div');
       wrapper.className = 'note-item';
       wrapper.dataset.code = code||'';
       wrapper.dataset.count = count||'';
       wrapper.dataset.type = type||'';
+      wrapper.dataset.typeNum = typeNum||'';
 
       const txt = document.createElement('span'); txt.className='note-text';
-      txt.textContent = formatNoteText(code,count,type);
+      txt.textContent = formatNoteText(wrapper.dataset.type, wrapper.dataset.typeNum, wrapper.dataset.code, wrapper.dataset.count);
 
       const actions = document.createElement('div');
       const edit = document.createElement('button'); edit.type='button'; edit.textContent='تعديل'; edit.className='edit-btn';
@@ -396,11 +453,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentCode = wrapper.dataset.code||'';
       const currentCount = wrapper.dataset.count||'';
       const currentType = wrapper.dataset.type||'';
+      const currentTypeNum = wrapper.dataset.typeNum||'';
       const txt = wrapper.querySelector('.note-text');
       if (!txt) return;
       const editor = document.createElement('div'); editor.style.display='flex'; editor.style.gap='8px'; editor.style.alignItems='center';
       const codeIn = document.createElement('input'); codeIn.className='input small'; codeIn.value=currentCode;
       const countIn = document.createElement('input'); countIn.className='input small'; countIn.value=currentCount;
+
+      // select for type
       const typeSel = document.createElement('select'); typeSel.className='input small';
       ['', 'حرة','سهم','صقر','برق','ردع'].forEach(v=>{
         const o = document.createElement('option');
@@ -409,6 +469,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (v === currentType) o.selected = true;
         typeSel.appendChild(o);
       });
+      const typeNumIn = document.createElement('input'); typeNumIn.className='input small'; typeNumIn.placeholder='رقم التوسعه (مثال: 7)'; typeNumIn.value = currentTypeNum;
+
       const save = document.createElement('button'); save.type='button'; save.className='add-btn'; save.textContent='حفظ';
       const cancel = document.createElement('button'); cancel.type='button'; cancel.className='del-btn'; cancel.textContent='إلغاء';
 
@@ -416,13 +478,14 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.dataset.code = codeIn.value.trim();
         wrapper.dataset.count = countIn.value.trim();
         wrapper.dataset.type = typeSel.value;
-        txt.textContent = formatNoteText(wrapper.dataset.code, wrapper.dataset.count, wrapper.dataset.type);
+        wrapper.dataset.typeNum = typeNumIn.value.trim();
+        txt.textContent = formatNoteText(wrapper.dataset.type, wrapper.dataset.typeNum, wrapper.dataset.code, wrapper.dataset.count);
         editor.replaceWith(txt);
       });
 
       cancel.addEventListener('click', ()=> editor.replaceWith(txt));
 
-      editor.appendChild(codeIn); editor.appendChild(countIn); editor.appendChild(typeSel);
+      editor.appendChild(codeIn); editor.appendChild(typeSel); editor.appendChild(typeNumIn); editor.appendChild(countIn);
       editor.appendChild(save); editor.appendChild(cancel);
       txt.replaceWith(editor);
     }
@@ -434,10 +497,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const code = (document.getElementById('noteCode')||{value:''}).value.trim();
         const count = (document.getElementById('noteCount')||{value:''}).value.trim();
         const type = (document.getElementById('noteType')||{value:''}).value;
-        if (!code && !count && !type) return;
-        const item = createNoteItem(code,count,type);
+        const typeNum = (document.getElementById('noteTypeNumber')||{value:''}).value.trim();
+        if (!code && !count && !type && !typeNum) return;
+        const item = createNoteItem(code,count,type,typeNum);
         document.getElementById('notesList').appendChild(item);
-        document.getElementById('noteCode').value=''; document.getElementById('noteCount').value='';
+        document.getElementById('noteCode').value=''; document.getElementById('noteCount').value=''; document.getElementById('noteType').value=''; document.getElementById('noteTypeNumber').value='';
       });
     } else console.warn('addNoteBtn not found');
 
